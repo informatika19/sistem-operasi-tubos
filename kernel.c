@@ -15,3 +15,28 @@ int main(){
 
     while (1);
 }
+
+void handleInterrupt21(int AX, int BX, int CX, int DX){
+    switch(AX) {
+        case 0x0:
+            printString(BX);
+            break;
+        case 0x1:
+            readString(BX);
+            break;
+        default:
+            printString("Invalid interrupt");
+    }
+}
+
+void printString(char* string){
+
+}
+
+void readString(char* string){
+
+}
+
+void clear(char* buffer, int length){
+    
+}
