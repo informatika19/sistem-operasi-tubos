@@ -1,19 +1,23 @@
 #Makefile
-all: clean image boot compile
+all: createImage compileBootLoader enterToDisk compileKernel
 
-image:
+createImage:
 	dd if=/dev/zero of=system.img bs=512 count=2880
 
-boot:
-	nasm bootloader.asm -o bootloader
-	dd if=bootloader of=system.img bs=512 count=1 conv=notrunc
+compileBootLoader:
+	nasm bootloader.asm -o compiledResult/bootloader
 
-compile:
-	bcc -ansi -c -o kernel.o kernel.c
-	nasm -f as86 kernel.asm -o kernel_asm.o
-	ld86 -o kernel -d kernel.o kernel_asm.o
-	dd if=kernel of=system.img bs=512 conv=notrunc seek=1
+enterToDisk:
+	dd if=compiledResult/bootloader of=system.img bs=512 count=1 conv=notrunc
 
-clean:
+compileKernel:
+	bcc -ansi -c -o compiledResult/kernel.o kernel.c
+	nasm -f as86 kernel.asm -o compiledResult/kernel_asm.o
+	ld86 -o compiledResult/kernel -d compiledResult/kernel.o compiledResult/kernel_asm.o
+	dd if=compiledResult/kernel of=system.img bs=512 conv=notrunc seek=1
+
+cleanImg:
 	rm *.img
 
+test:
+	gcc -Wall -Wextra -o compgcc.o kernel.c

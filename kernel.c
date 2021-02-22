@@ -11,7 +11,10 @@ void readString(char* string);
 void clear(char* buffer, int length);
 
 int main(){
-
+    putInMemory(0xB000, 0x8000, 'H');
+    putInMemory(0xB000, 0x8001, 0xD);
+    putInMemory(0XB000, 0X8002, 'A');
+    putInMemory(0XB000, 0X8003, 0xD);
 
     while (1);
 }
