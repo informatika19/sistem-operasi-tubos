@@ -7,38 +7,29 @@ Made by TubOS
 
 #include "kernel.h"
 
-int TEXT_HEIGHT=0;
-
-
 int main(){
-    // DEBUG
-    // putInMemory(0xB000, 0x8000, 'H');
-    // putInMemory(0xB000, 0x8001, 0xD);
-    // putInMemory(0XB000, 0X8002, 'A');
-    // putInMemory(0XB000, 0X8003, 0xD);
+    // drawBootLogo();
 
-    printString("tessssssssssssss");
-    printString("tesss");
-    printString("TUBOSSS");
-    printString("jajajajajaja"); //fix why there is space
+    makeInterrupt21();
 
     while (1);
 }
 
 void handleInterrupt21(int AX, int BX, int CX, int DX){
-    // switch(AX) {
-    //     case 0x0:
-    //         printString(BX);
-    //         break;
-    //     case 0x1:
-    //         readString(BX);
-    //         break;
-    //     default:
-    //         printString("Invalid interrupt");
-    // }
+    drawString("haha");
+    switch(AX) {
+        case 0x0:
+            printString(BX);
+            break;
+        // case 0x1:
+        //     readString(BX);
+        //     break;
+        default:
+            printString("Invalid interrupt");
+    }
 }
 
-void printString(char *string){
+void drawString(char *string){
     int i=0;
     int TEXT_LENGTH=0;
     while (string[i]!='\0'){
@@ -50,10 +41,34 @@ void printString(char *string){
     TEXT_HEIGHT++;
 }
 
-// void readString(char* string){
+void printString(char *string){
+    int i=0;
+    while(string[i] != '\0'){
+        int CH=string[i];
+        interrupt(0x10, 0xe*256+CH, 0, 0, 0);
+        i++;
+    }
+}
+
+// void readString(char *string){
 
 // }
 
 // void clear(char* buffer, int length){
     
 // }
+
+void drawBootLogo(){
+    drawString("             .----------------.  .----------------. ");
+    drawString("            | .--------------. || .--------------. |");
+    drawString("            | |     ____     | || |    _______   | |");
+    drawString("            | |   .'    `.   | || |   /  ___  |  | |");
+    drawString("            | |  /  .--.  \\  | || |  |  (__ \\_|  | |");
+    drawString("            | |  | |    | |  | || |   '.___`-.   | |");
+    drawString("            | |  \\  `--'  /  | || |  |`\\____) |  | |");
+    drawString("            | |   `.____.'   | || |  |_______.'  | |");
+    drawString("            | |              | || |              | |");
+    drawString("            | '--------------' || '--------------' |");
+    drawString("             '----------------'  '----------------' ");
+
+};
