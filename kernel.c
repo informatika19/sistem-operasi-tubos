@@ -7,15 +7,20 @@ Made by TubOS
 
 #include "kernel.h"
 
-int i=0;
+int TEXT_HEIGHT=0;
+
 
 int main(){
+    // DEBUG
     // putInMemory(0xB000, 0x8000, 'H');
     // putInMemory(0xB000, 0x8001, 0xD);
     // putInMemory(0XB000, 0X8002, 'A');
     // putInMemory(0XB000, 0X8003, 0xD);
 
-    printString("HAI");
+    printString("tessssssssssssss");
+    printString("tesss");
+    printString("TUBOSSS");
+    printString("jajajajajaja"); //fix why there is space
 
     while (1);
 }
@@ -33,15 +38,16 @@ void handleInterrupt21(int AX, int BX, int CX, int DX){
     // }
 }
 
-void printString(char* string){
-        
-    while (*string){
-        putInMemory(VID_MEMORY, 0x8000+i,string[i]);
-        // putInMemory(VID_MEMORY, ,0xD);
+void printString(char *string){
+    int i=0;
+    int TEXT_LENGTH=0;
+    while (string[i]!='\0'){
+        putInMemory(VID_MEMORY, 0x8000+ (80*TEXT_HEIGHT+TEXT_LENGTH)*2, string[i]);
+        putInMemory(VID_MEMORY, 0x8001+ (80*TEXT_HEIGHT+TEXT_LENGTH)*2, COLOR_CYAN);
         i++;
-        // x++;
-        // y++;
+        TEXT_LENGTH++;
     }
+    TEXT_HEIGHT++;
 }
 
 // void readString(char* string){
