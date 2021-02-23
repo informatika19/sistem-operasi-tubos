@@ -16,6 +16,8 @@ void handleInterrupt21(int AX, int BX, int CX, int DX);
 void printString(char *string);
 void readString(char *string);
 void clear(char* buffer, int length);
+void delay();
+int mod(int x, int y);
 
 int TEXT_HEIGHT = 0;
 

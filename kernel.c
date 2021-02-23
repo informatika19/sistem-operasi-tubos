@@ -9,7 +9,10 @@ Made by TubOS
 
 int main()
 {
+    interrupt(0x10, 0x0003, 0, 0, 0);
     drawBootLogo();
+    delay();
+    interrupt(0x10, 0x0003, 0, 0, 0);
 
     makeInterrupt21();
 
@@ -112,3 +115,26 @@ void drawBootLogo()
     drawString("               $$ |\\$$$$$$  |$$$$$$$  | $$$$$$  |\\$$$$$$  |");
     drawString("               \\__| \\______/ \\_______/  \\______/  \\______/ ");
 };
+
+void delay(){
+    int i=32767;
+    int j=32767;
+    int k=32767;
+    int l=2048;
+    while(i>0){
+        if (mod(j,4)==0){
+            if(mod(k,6)==0){
+                if(mod(l,6)==0){
+                    i--;
+                }
+                l--;        
+            }
+            k--;
+        }
+        j--;
+    } 
+}
+
+int mod(int x, int y){
+    return(x-y*(x/y));
+}
