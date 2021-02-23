@@ -1,2 +1,4 @@
-*.txt
-system.img
+bootloader
+kernel
+kernel_asm.o
+kernel.o

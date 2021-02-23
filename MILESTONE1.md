@@ -6,5 +6,6 @@
 3. Fadel Ananda Dotty       (13519146)  
 
 - Cara kerja *interrupt* pada Sistem Operasi:  
-  
+
+
 - Cara kerja kode di kernel.asm:

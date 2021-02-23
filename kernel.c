@@ -12,8 +12,9 @@ int main()
     drawBootLogo();
 
     makeInterrupt21();
-    interrupt(0x21, 1, "shell", 0x2000, 0); //testing..
+
     while (1)
+        interrupt(0x21, 1, "shell\0", 0x2000, 0);
         ;
 }
 
@@ -24,9 +25,9 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
     case 0x0:
         printString(BX);
         break;
-    // case 0x1:
-    //     readString(BX);
-    //     break;
+    case 0x1:
+        readString(BX);
+        break;
     default:
         printString("Invalid interrupt");
     }
@@ -91,6 +92,8 @@ void clear(char *buffer, int length)
 {
     int i = 0;
 
+    /* Mengganti isi buffer 
+    dengan empty yang sama dengan 0 */
     while (i < length)
     {
         buffer[i] = EMPTY;
