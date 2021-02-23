@@ -6,8 +6,8 @@
 #define COLOR_DARK_GRAY 0x8
 
 /* fungsi kernel yang akan diimplementasikan*/
-void drawBootLogo();
-void drawString(char *string);
+void drawBootLogo(); //draw boot logo
+void drawString(char *string); //draw string in memory 0xB000
 void handleInterrupt21(int AX, int BX, int CX, int DX);
 void printString(char *string);
 void readString(char *string);
