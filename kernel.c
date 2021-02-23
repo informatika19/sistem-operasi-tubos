@@ -12,14 +12,13 @@ int main()
     drawBootLogo();
 
     makeInterrupt21();
-
+    interrupt(0x21, 1, "shell", 0x2000, 0); //testing..
     while (1)
         ;
 }
 
 void handleInterrupt21(int AX, int BX, int CX, int DX)
 {
-    drawString("haha");
     switch (AX)
     {
     case 0x0:
@@ -73,14 +72,11 @@ void readString(char *string)
         }
         else if (input == 8) // 8 adalah simbol ascii tombol backspace
         {
-            if (count > 1)
-            {
-                //agar cursor mundur ke kiri
-                interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //backspace
-                interrupt(0x10, 0xe * 256 + 0, 0, 0, 0); //menghapus input saat itu(diganti null)
-                interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //kembali ke backspace
-                count--;
-            }
+            //agar cursor mundur ke kiri
+            interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //backspace
+            interrupt(0x10, 0xe * 256 + 0, 0, 0, 0); //menghapus input saat itu(diganti null)
+            interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //kembali ke backspace
+            count--;
         }
         else
         {
