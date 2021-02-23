@@ -54,9 +54,14 @@ void printString(char *string){
 
 // }
 
-// void clear(char* buffer, int length){
-    
-// }
+void clear(char* buffer, int length){
+    int i = 0;
+
+    while (i < length) {
+        buffer[i] = EMPTY;
+        i++;
+    }
+}
 
 void drawBootLogo(){
     drawString("            $$$$$$$$\\        $$\\        $$$$$$\\   $$$$$$\\  ");

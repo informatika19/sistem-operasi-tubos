@@ -1,6 +1,10 @@
 #ifndef __KERNEL__H__
 #define __KERNEL__H__
 
+#define EMPTY 0x00
+#define ENTER 0xD
+#define ENDSTRING 0X0
+#define BACKSPACE 0X8
 #define VID_MEMORY 0xB000
 #define COLOR_CYAN 0xB
 #define COLOR_DARK_GRAY 0x8
