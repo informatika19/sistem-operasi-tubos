@@ -7,63 +7,103 @@ Made by TubOS
 
 #include "kernel.h"
 
-int main(){
+int main()
+{
     drawBootLogo();
 
     makeInterrupt21();
 
-    while (1);
+    while (1)
+        ;
 }
 
-void handleInterrupt21(int AX, int BX, int CX, int DX){
+void handleInterrupt21(int AX, int BX, int CX, int DX)
+{
     drawString("haha");
-    switch(AX) {
-        case 0x0:
-            printString(BX);
-            break;
-        // case 0x1:
-        //     readString(BX);
-        //     break;
-        default:
-            printString("Invalid interrupt");
+    switch (AX)
+    {
+    case 0x0:
+        printString(BX);
+        break;
+    // case 0x1:
+    //     readString(BX);
+    //     break;
+    default:
+        printString("Invalid interrupt");
     }
 }
 
-void drawString(char *string){
-    int i=0;
-    int TEXT_LENGTH=0;
-    while (string[i]!='\0'){
-        putInMemory(VID_MEMORY, 0x8000+ (80*TEXT_HEIGHT+TEXT_LENGTH)*2, string[i]);
-        putInMemory(VID_MEMORY, 0x8001+ (80*TEXT_HEIGHT+TEXT_LENGTH)*2, COLOR_CYAN);
+void drawString(char *string)
+{
+    int i = 0;
+    int TEXT_LENGTH = 0;
+    while (string[i] != '\0')
+    {
+        putInMemory(VID_MEMORY, 0x8000 + (80 * TEXT_HEIGHT + TEXT_LENGTH) * 2, string[i]);
+        putInMemory(VID_MEMORY, 0x8001 + (80 * TEXT_HEIGHT + TEXT_LENGTH) * 2, COLOR_CYAN);
         i++;
         TEXT_LENGTH++;
     }
     TEXT_HEIGHT++;
 }
 
-void printString(char *string){
-    int i=0;
-    while(string[i] != '\0'){
-        int CH=string[i];
-        interrupt(0x10, 0xe*256+CH, 0, 0, 0);
+void printString(char *string)
+{
+    int i = 0;
+    while (string[i] != '\0')
+    {
+        int CH = string[i];
+        interrupt(0x10, 0xe * 256 + CH, 0, 0, 0);
         i++;
     }
 }
 
-// void readString(char *string){
+void readString(char *string)
+{
+    int count = 0;
+    while (1) //1/true agar loop terus
+    {
+        int input = interrupt(0x16, 0, 0, 0, 0);
+        if (input == 13) // 13 adalah simbol ascii tombol enter
+        {
+            string[count] = 0x0;
+            string[count + 1] = 10;
+            string[count + 2] = 13;
+            return; //keluar dari loop
+        }
+        else if (input == 8) // 8 adalah simbol ascii tombol backspace
+        {
+            if (count > 1)
+            {
+                //agar cursor mundur ke kiri
+                interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //backspace
+                interrupt(0x10, 0xe * 256 + 0, 0, 0, 0); //menghapus input saat itu(diganti null)
+                interrupt(0x10, 0xe * 256 + 8, 0, 0, 0); //kembali ke backspace
+                count--;
+            }
+        }
+        else
+        {
+            string[count] = input;                       //input dari keyboard
+            interrupt(0x10, 0xe * 256 + input, 0, 0, 0); // menampilkan ke layar hasil inputan
+            count++;
+        }
+    }
+}
 
-// }
-
-void clear(char* buffer, int length){
+void clear(char *buffer, int length)
+{
     int i = 0;
 
-    while (i < length) {
+    while (i < length)
+    {
         buffer[i] = EMPTY;
         i++;
     }
 }
 
-void drawBootLogo(){
+void drawBootLogo()
+{
     drawString("            $$$$$$$$\\        $$\\        $$$$$$\\   $$$$$$\\  ");
     drawString("            \\__$$  __|       $$ |      $$  __$$\\ $$  __$$\\ ");
     drawString("               $$ |$$\\   $$\\ $$$$$$$\\  $$ /  $$ |$$ /  \\__|");
