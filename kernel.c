@@ -9,16 +9,24 @@ Made by TubOS
 
 int main()
 {
+    int y = 1;
+    char *string;
     interrupt(0x10, 0x0003, 0, 0, 0);
+
     drawBootLogo();
     delay();
     interrupt(0x10, 0x0003, 0, 0, 0);
 
     makeInterrupt21();
 
+    printString("Masukan Command:\n");
     while (1)
-        interrupt(0x21, 1, "shell\0", 0x2000, 0);
-        ;
+    {
+        interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
+        interrupt(0x21, 1, string, 0, 0);
+        y++;
+        interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
+    }
 }
 
 void handleInterrupt21(int AX, int BX, int CX, int DX)
@@ -106,6 +114,8 @@ void clear(char *buffer, int length)
 
 void drawBootLogo()
 {
+    drawString("Now Loading...");
+    drawString(" ");
     drawString("            $$$$$$$$\\        $$\\        $$$$$$\\   $$$$$$\\  ");
     drawString("            \\__$$  __|       $$ |      $$  __$$\\ $$  __$$\\ ");
     drawString("               $$ |$$\\   $$\\ $$$$$$$\\  $$ /  $$ |$$ /  \\__|");
@@ -116,25 +126,31 @@ void drawBootLogo()
     drawString("               \\__| \\______/ \\_______/  \\______/  \\______/ ");
 };
 
-void delay(){
-    int i=32767;
-    int j=32767;
-    int k=32767;
-    int l=2048;
-    while(i>0){
-        if (mod(j,4)==0){
-            if(mod(k,6)==0){
-                if(mod(l,6)==0){
+void delay()
+{
+    int i = 32767;
+    int j = 32767;
+    int k = 32767;
+    int l = 2048;
+    while (i > 0)
+    {
+        if (mod(j, 4) == 0)
+        {
+            if (mod(k, 6) == 0)
+            {
+                if (mod(l, 6) == 0)
+                {
                     i--;
                 }
-                l--;        
+                l--;
             }
             k--;
         }
         j--;
-    } 
+    }
 }
 
-int mod(int x, int y){
-    return(x-y*(x/y));
+int mod(int x, int y)
+{
+    return (x - y * (x / y));
 }
