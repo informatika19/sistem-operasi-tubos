@@ -11,10 +11,7 @@ int main()
 {
     int y = 1;
     char *string;
-    drawBootLogo(); //draw ASCII art
-    interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
-    drawGraphic();
-    interrupt(0x10, 0x0003, 0, 0, 0);
+    setupBoot(); // menuliskan logo ke layar (bonus)
 
     makeInterrupt21();
 
@@ -111,6 +108,13 @@ void clear(char *buffer, int length)
     }
 }
 
+void setupBoot(){
+    drawBootLogo(); //draw ASCII art
+    interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
+    drawGraphic();
+    interrupt(0x10, 0x0003, 0, 0, 0);
+}
+
 void drawBootLogo() //Bonus ASCII art
 {
     interrupt(0x10, 0x0003, 0, 0, 0); //reset screen
@@ -125,25 +129,25 @@ void drawBootLogo() //Bonus ASCII art
     drawString("               $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$\\   $$ |");
     drawString("               $$ |\\$$$$$$  |$$$$$$$  | $$$$$$  |\\$$$$$$  |");
     drawString("               \\__| \\______/ \\_______/  \\______/  \\______/ ");
-    delayLogo(); //delay
+    delay(5000, 5000); //delay
     TEXT_HEIGHT = 0; //mengeset text height jadi 0
 };
 
 void drawGraphic(){ //BONUS draw pixel
     drawBox(40, 279, 25, 174, 40, COLOR_DARK_GRAY);
-    miniDelay();
+    delay(2500, 2500);
     drawBox(80, 239, 50, 149, 80, COLOR_LIGHT_GRAY);
-    miniDelay();
+    delay(2500, 2500);
     drawBox(120, 199, 75, 124, 120, COLOR_WHITE);    
-    miniDelay();
+    delay(2500, 2500);
     drawBox(130, 155, 80, 97, 130, COLOR_BLACK);
-    miniDelay();
+    delay(2000, 2000);
     drawBox(130, 155, 102, 119, 130, COLOR_BLACK);  
-    miniDelay();
-    drawBox(164, 189, 80, 97, 164, COLOR_BLACK);         
-    miniDelay();
+    delay(2000, 2000);
     drawBox(164, 189, 102, 119, 164, COLOR_BLACK);     
-    miniDelay();                                      
+    delay(2000, 2000);
+    drawBox(164, 189, 80, 97, 164, COLOR_BLACK);         
+    delay(2500, 2500);                                
 }
 
 void drawBox(int x1, int x2, int y1, int y2, int z, int color){
@@ -157,26 +161,12 @@ void drawBox(int x1, int x2, int y1, int y2, int z, int color){
     }
 }
 
-void miniDelay(){
-
+void delay(int a, int b){
     int i=0;
     int j=0;
-    while(i<2500){
+    while(i<a){
         j=0;
-        while(j<2500){
-            j++;
-        }
-        i++;
-    }
-}
-
-void delayLogo(){ //delay untuk logo boot menggunakan ASCII art
-
-    int i=0;
-    int j=0;
-    while(i<5500){
-        j=0;
-        while(j<5500){
+        while(j<b){
             j++;
         }
         i++;

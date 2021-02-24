@@ -13,17 +13,17 @@
 #define COLOR_BLACK 0X0
 
 /* fungsi kernel yang akan diimplementasikan*/
-void drawBootLogo(); //draw boot logo
-void drawString(char *string); //draw string in memory 0xB000
 void handleInterrupt21(int AX, int BX, int CX, int DX);
 void printString(char *string);
 void readString(char *string);
 void clear(char* buffer, int length);
-void miniDelay();
-void delayLogo();
-int mod(int x, int y);
-void drawGraphic();
+void drawString(char *string); //draw string in memory 0xB000
 void drawBox(int x1, int x2, int y1, int y2, int z, int color);
+void drawBootLogo(); //draw boot logo
+void drawGraphic();
+void delay(int a, int b);
+void setupBoot();
+int mod(int x, int y);
 
 int TEXT_HEIGHT = 0;
 
