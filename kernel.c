@@ -11,10 +11,9 @@ int main()
 {
     int y = 1;
     char *string;
-    interrupt(0x10, 0x0003, 0, 0, 0);
-
-    drawBootLogo();
-    delay();
+    drawBootLogo(); //draw ASCII art
+    interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
+    drawGraphic();
     interrupt(0x10, 0x0003, 0, 0, 0);
 
     makeInterrupt21();
@@ -44,7 +43,7 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
     }
 }
 
-void drawString(char *string)
+void drawString(char *string) //menggambar di address memori VGA
 {
     int i = 0;
     int TEXT_LENGTH = 0;
@@ -64,7 +63,7 @@ void printString(char *string)
     while (string[i] != '\0')
     {
         int CH = string[i];
-        interrupt(0x10, 0xe * 256 + CH, 0, 0, 0);
+        interrupt(0x10, 0xe * 256 + CH, 0, 0, 0); //interrupt untuk menampilkan char ke layar
         i++;
     }
 }
@@ -112,8 +111,10 @@ void clear(char *buffer, int length)
     }
 }
 
-void drawBootLogo()
+void drawBootLogo() //Bonus ASCII art
 {
+    interrupt(0x10, 0x0003, 0, 0, 0); //reset screen
+    interrupt(0x10, 0x0100, 0, 0x2607, 0); //invisible cursor
     drawString("Now Loading...");
     drawString(" ");
     drawString("            $$$$$$$$\\        $$\\        $$$$$$\\   $$$$$$\\  ");
@@ -124,29 +125,61 @@ void drawBootLogo()
     drawString("               $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$\\   $$ |");
     drawString("               $$ |\\$$$$$$  |$$$$$$$  | $$$$$$  |\\$$$$$$  |");
     drawString("               \\__| \\______/ \\_______/  \\______/  \\______/ ");
+    delayLogo(); //delay
+    TEXT_HEIGHT = 0; //mengeset text height jadi 0
 };
 
-void delay()
-{
-    int i = 32767;
-    int j = 32767;
-    int k = 32767;
-    int l = 2048;
-    while (i > 0)
-    {
-        if (mod(j, 4) == 0)
-        {
-            if (mod(k, 6) == 0)
-            {
-                if (mod(l, 6) == 0)
-                {
-                    i--;
-                }
-                l--;
-            }
-            k--;
+void drawGraphic(){ //BONUS draw pixel
+    drawBox(40, 279, 25, 174, 40, COLOR_DARK_GRAY);
+    miniDelay();
+    drawBox(80, 239, 50, 149, 80, COLOR_LIGHT_GRAY);
+    miniDelay();
+    drawBox(120, 199, 75, 124, 120, COLOR_WHITE);    
+    miniDelay();
+    drawBox(130, 155, 80, 97, 130, COLOR_BLACK);
+    miniDelay();
+    drawBox(130, 155, 102, 119, 130, COLOR_BLACK);  
+    miniDelay();
+    drawBox(164, 189, 80, 97, 164, COLOR_BLACK);         
+    miniDelay();
+    drawBox(164, 189, 102, 119, 164, COLOR_BLACK);     
+    miniDelay();                                      
+}
+
+void drawBox(int x1, int x2, int y1, int y2, int z, int color){
+    while(y1<y2){
+        while(x1<x2){
+            interrupt(0x10, 0x0C00|color, 0, x1, y1);
+            x1++;
         }
-        j--;
+        x1=z;
+        y1++;
+    }
+}
+
+void miniDelay(){
+
+    int i=0;
+    int j=0;
+    while(i<2500){
+        j=0;
+        while(j<2500){
+            j++;
+        }
+        i++;
+    }
+}
+
+void delayLogo(){ //delay untuk logo boot menggunakan ASCII art
+
+    int i=0;
+    int j=0;
+    while(i<5500){
+        j=0;
+        while(j<5500){
+            j++;
+        }
+        i++;
     }
 }
 

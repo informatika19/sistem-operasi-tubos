@@ -8,6 +8,9 @@
 #define VID_MEMORY 0xB000
 #define COLOR_CYAN 0xB
 #define COLOR_DARK_GRAY 0x8
+#define COLOR_LIGHT_GRAY 0x7
+#define COLOR_WHITE 0xF
+#define COLOR_BLACK 0X0
 
 /* fungsi kernel yang akan diimplementasikan*/
 void drawBootLogo(); //draw boot logo
@@ -16,8 +19,11 @@ void handleInterrupt21(int AX, int BX, int CX, int DX);
 void printString(char *string);
 void readString(char *string);
 void clear(char* buffer, int length);
-void delay();
+void miniDelay();
+void delayLogo();
 int mod(int x, int y);
+void drawGraphic();
+void drawBox(int x1, int x2, int y1, int y2, int z, int color);
 
 int TEXT_HEIGHT = 0;
 

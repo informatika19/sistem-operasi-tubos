@@ -19,5 +19,5 @@ compileKernel:
 cleanImg:
 	rm *.img
 
-test:
-	gcc -Wall -Wextra -o compgcc.o kernel.c
+# test:
+# 	gcc -Wall -Wextra -o compgcc.o kernel.c

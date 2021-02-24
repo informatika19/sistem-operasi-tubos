@@ -24,4 +24,4 @@ Fungsi *interrupt* menerima 5 parameter yaitu *number*, AX, BX, CX, dan DX. Para
 Fungsi makeInterrupt berfungsi untuk melakukan setup agar apabila interrupt 21 dipanggil, maka akan memanggil fungsi handleInterrupt21.
 
 4. handleInterrupt21
-Fungsi handleInterrupt21 menerima 4 parameter yaitu AX, BX, CX, dan DX. Fungsi ini akan melakukan fungsi-fungsi lain tergantung dari interrupt yang dipanggil dan parameter AX yang diberikan. Misalnya interrupt(0x21, 0x0, 0, 0, 0) akan memanggil fungsi printString.
+Fungsi handleInterrupt21 menerima 4 parameter yaitu AX, BX, CX, dan DX. Fungsi ini akan melakukan fungsi-fungsi lain tergantung dari interrupt yang dipanggil dan parameter AX yang diberikan. Misalnya interrupt(0x21, 0x0, 0, 0, 0) akan memanggil fungsi printString dan interrupt(0x21, 0x1, 0, 0, 0) akan memanggil fungsi readString. Default dari fungsi handleInterrupt21 adalah menuliskan kalimat invalid interrupt.
