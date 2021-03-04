@@ -27,7 +27,10 @@ int main()
 
 void handleInterrupt21(int AX, int BX, int CX, int DX)
 {
-    switch (AX)
+    char AL, AH;
+    AL = (char) (AX);
+    AH = (char) (AX>>8);
+    switch (AL)
     {
     case 0x0:
         printString(BX);
@@ -35,11 +38,26 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
     case 0x1:
         readString(BX);
         break;
+    //TODO
+    // case 0x2:
+    //     readSector(BX, CX);
+    //     break;
+    // case 0x03:
+    //     writeSector(BX, CX);
+    //     break;
+    // case 0x04:
+    //     readFile(BX, CX, DX, AH);
+    //     break;
+    // case 0x5:
+    //     writeFile(BX, CX, DX, AH);
+    //     break;
     default:
         printString("Invalid interrupt");
     }
 }
 
+
+//MILESTONE 1
 void drawString(char *string) //menggambar di address memori VGA
 {
     int i = 0;
@@ -108,7 +126,15 @@ void clear(char *buffer, int length)
     }
 }
 
-void setupBoot(){
+//MILESTONE 2 TODO
+// void readSector(char *buffer, int sector)
+// {
+//     interrupt(0x13, 0x201, buffer, div(sector, 36) * 0x100 + mod(sector, 18) + 1, mod(div(sector, 18), 2) * 0x100);
+// }
+
+//ADDITIONAL FUNCTION
+void setupBoot()
+{
     drawBootLogo(); //draw ASCII art
     interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
     drawGraphic();
@@ -131,9 +157,10 @@ void drawBootLogo() //Bonus ASCII art
     drawString("               \\__| \\______/ \\_______/  \\______/  \\______/ ");
     delay(5000, 5000); //delay
     TEXT_HEIGHT = 0; //mengeset text height jadi 0
-};
+}
 
-void drawGraphic(){ //BONUS draw pixel
+void drawGraphic() //BONUS draw pixel
+{
     drawBox(40, 279, 25, 174, 40, COLOR_DARK_GRAY);
     delay(2500, 2500);
     drawBox(80, 239, 50, 149, 80, COLOR_LIGHT_GRAY);
@@ -176,4 +203,9 @@ void delay(int a, int b){
 int mod(int x, int y)
 {
     return (x - y * (x / y));
+}
+
+int div(int x, int y)
+{
+    return x/y;
 }
