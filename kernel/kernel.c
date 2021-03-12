@@ -10,7 +10,7 @@ Made by TubOS
 int main()
 {
     int y = 1;
-    char *string;
+    char string[1024];
     setupBoot(); // menuliskan logo ke layar (bonus)
 
     makeInterrupt21();
@@ -21,7 +21,7 @@ int main()
         interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
         interrupt(0x21, 1, string, 0, 0);
         y++;
-        interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
+        // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
     }
 }
 
@@ -85,15 +85,12 @@ void printString(char *string)
 
 void readString(char *string)
 {
-    int count = 0;
-    while (1) //1/true agar loop terus
+    int count = 0, input;
+    while (1)
     {
-        int input = interrupt(0x16, 0, 0, 0, 0);
-        if (input == 13) // 13 adalah simbol ascii tombol enter
+        input = interrupt(0x16, 0, 0, 0, 0);
+        if (input == 0xD) // 13 adalah simbol ascii tombol enter
         {
-            string[count] = 0x0;
-            string[count + 1] = 10;
-            string[count + 2] = 13;
             return; //keluar dari loop
         }
         else if (input == 8) // 8 adalah simbol ascii tombol backspace
