@@ -127,10 +127,25 @@ void clear(char *buffer, int length)
 }
 
 //MILESTONE 2 TODO
-// void readSector(char *buffer, int sector)
-// {
-//     interrupt(0x13, 0x201, buffer, div(sector, 36) * 0x100 + mod(sector, 18) + 1, mod(div(sector, 18), 2) * 0x100);
-// }
+
+void readSector(char *buffer, int sector){
+    interrupt(0x13,0x02*0x100+0x01,buffer,div(sector,36)*0x100+mod(sector,18) + 1,mod(div(sector,18),2)*0x100 + 0);
+}
+
+void writeSector(char *buffer, int sector){
+    interrupt(0x13,0x03*0x100+0x01,buffer,div(sector,36)*0x100+mod(sector,18) + 1,mod(div(sector,18),2)*0x100 + 0);
+}
+
+void readFile(char *buffer, char *path, int *result, char parentIndex){
+    // /* Read in the directory sector */
+    // readSector(buffer, 2);  
+}
+
+
+void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
+
+}
+
 
 //ADDITIONAL FUNCTION
 void setupBoot()
