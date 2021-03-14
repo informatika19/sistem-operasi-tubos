@@ -143,7 +143,22 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
 
 }
 
-
+// UTILITAS
+/** Menentukan apakah dua buah string sama atau tidak */
+void strCompare(char *s1, char *s2, int *same) {
+	int i = 0;
+	int isSame = TRUE;
+    do
+    {
+        if (s1[i] != s2[i])
+        {
+			isSame = FALSE;
+		}
+		i += 1;
+    } while (isSame && (s1[i] != '\0' || s2[i] != '\0'));
+    
+	*same = isSame;
+}
 //ADDITIONAL FUNCTION
 void setupBoot()
 {

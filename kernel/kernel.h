@@ -11,6 +11,8 @@
 #define COLOR_LIGHT_GRAY 0x7
 #define COLOR_WHITE 0xF
 #define COLOR_BLACK 0X0
+#define TRUE 1
+#define FALSE 0
 
 /* fungsi kernel yang akan diimplementasikan*/
 //MILESTONE 1
