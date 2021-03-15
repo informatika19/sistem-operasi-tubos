@@ -45,3 +45,13 @@ void strcopy(char* str1, char* str2){
         str2++;
     }
 }
+
+void strncpy(char *destination, char *source, int n){
+
+    while(*source && n--){
+        *destination = *source;
+        destination++;
+        source++;
+    }
+    *destination = '\0';
+}
