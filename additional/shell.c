@@ -26,10 +26,21 @@ void readInput(char *input){
     // strCompare(input, "ls", &i);
     
     if(strcmp(input, "ls") == 0){
-        print("\r\nhellow");
+        ls();
     } else if (strcmp(input, "cd") == 0){
 
-    } else if (strcmp(input, "ls") == 0){
+    } else if (strcmp(input, "cat") == 0){
 
+    } else if (strcmp(input, "ln") == 0){
+        
     }
+}
+
+void ls(){
+    
+}
+
+void getDir(char *dir){
+    interrupt(0x21, 0x0002, dir, FILES_SECTOR, 0);
+    interrupt(0x21, 0x0002, dir+SECTOR_SIZE, FILES_SECTOR+1, 0);
 }
