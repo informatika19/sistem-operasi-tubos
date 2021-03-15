@@ -25,3 +25,23 @@ int div(int x, int y)
 {
     return x/y;
 }
+
+int strlen(char* string){
+    int count = 0;
+    while (string[count] != '\0')
+    {
+        count++;
+    }
+    return count;
+}
+
+//copy str1 ke str2
+void strcopy(char* str1, char* str2){
+
+    while (*str1 != '\0')
+    {
+        *str2 = *str1;
+        str1++;
+        str2++;
+    }
+}
