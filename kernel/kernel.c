@@ -6,21 +6,25 @@ Made by TubOS
 */
 
 #include "kernel.h"
-
 int main()
 {
     int y = 1;
     char string[1024];
-    setupBoot(); // menuliskan logo ke layar (bonus)
+    //setupBoot(); // menuliskan logo ke layar (bonus)
+    interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
 
     makeInterrupt21();
 
     printString("Masukan Command:\n");
     while (1)
     {
+        // int isSame;
         interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
         interrupt(0x21, 1, string, 0, 0);
         y++;
+        if(strcmp(string, "shell") == 0){
+            initShell();
+        }
         // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
     }
 }
@@ -91,6 +95,7 @@ void readString(char *string)
         input = interrupt(0x16, 0, 0, 0, 0);
         if (input == 0xD) // 13 adalah simbol ascii tombol enter
         {
+            string[count] = '\0';
             return; //keluar dari loop
         }
         else if (input == 8) // 8 adalah simbol ascii tombol backspace
@@ -211,12 +216,3 @@ void delay(int a, int b){
     }
 }
 
-int mod(int x, int y)
-{
-    return (x - y * (x / y));
-}
-
-int div(int x, int y)
-{
-    return x/y;
-}

@@ -11,6 +11,8 @@
 #define COLOR_LIGHT_GRAY 0x7
 #define COLOR_WHITE 0xF
 #define COLOR_BLACK 0X0
+#define TRUE 1
+#define FALSE 0
 
 /* fungsi kernel yang akan diimplementasikan*/
 //MILESTONE 1
@@ -31,8 +33,7 @@ void drawBootLogo(); //draw boot logo
 void drawGraphic();
 void delay(int a, int b);
 void setupBoot();
-int mod(int x, int y);
-int div(int x, int y);
+
 
 int TEXT_HEIGHT = 0;
 
