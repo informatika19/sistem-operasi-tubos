@@ -6,7 +6,6 @@ Made by TubOS
 */
 
 #include "kernel.h"
-void strCompare(char *s1, char *s2, int *same);
 int main()
 {
     int y = 1;
@@ -19,11 +18,11 @@ int main()
     printString("Masukan Command:\n");
     while (1)
     {
-        int isSame;
+        // int isSame;
         interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
         interrupt(0x21, 1, string, 0, 0);
         y++;
-        if(strCompare(string, "shell", &isSame) == 1){
+        if(strcmp(string, "shell") == 0){
             initShell();
         }
         // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
@@ -96,6 +95,7 @@ void readString(char *string)
         input = interrupt(0x16, 0, 0, 0, 0);
         if (input == 0xD) // 13 adalah simbol ascii tombol enter
         {
+            string[count] = '\0';
             return; //keluar dari loop
         }
         else if (input == 8) // 8 adalah simbol ascii tombol backspace
@@ -148,22 +148,6 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
 
 }
 
-// UTILITAS
-/** Menentukan apakah dua buah string sama atau tidak */
-void strCompare(char *s1, char *s2, int *same) {
-	int i = 0;
-	int isSame = TRUE;
-    do
-    {
-        if (s1[i] != s2[i])
-        {
-			isSame = FALSE;
-		}
-		i += 1;
-    } while (isSame && (s1[i] != '\0' || s2[i] != '\0'));
-    
-	*same = isSame;
-}
 //ADDITIONAL FUNCTION
 void setupBoot()
 {
@@ -232,12 +216,3 @@ void delay(int a, int b){
     }
 }
 
-int mod(int x, int y)
-{
-    return (x - y * (x / y));
-}
-
-int div(int x, int y)
-{
-    return x/y;
-}

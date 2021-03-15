@@ -33,8 +33,7 @@ void drawBootLogo(); //draw boot logo
 void drawGraphic();
 void delay(int a, int b);
 void setupBoot();
-int mod(int x, int y);
-int div(int x, int y);
+
 
 int TEXT_HEIGHT = 0;
 
