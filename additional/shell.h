@@ -17,5 +17,5 @@ void readInput(char *input, char *table, char currentDir, int *cursor);
 void ls(char *dir, char currentDir);
 void getDir(char *dir);
 // void cd(char *dir, char currentDir);
-void cat(char *table, char *fname, char currentDir);
+void cat(char *fname, char currentDir);
 void getCurrentDir(char *dir, char currentDir);
