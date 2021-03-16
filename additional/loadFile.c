@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
     */
 
     if (argc > 2) {
-        printf("Masukkan nama file yang akan di-load: \n");
+        printf("Masukkan nama file yang akan di-load\n");
         return -1;
     }
 
@@ -156,14 +156,15 @@ int main(int argc, char* argv[]) {
         if (fileSecNum == 1) {
             files1[idx * 16] = 0xFF;
             writeName(files1, idx, argv[1]);
+            writeSector(files1, system_img, FILES_SECTOR1);
+        
         } else if (fileSecNum == 2) {
             files2[idx * 16] = 0xFF;
             writeName(files2, idx, argv[1]);
+            writeSector(files2, system_img, FILES_SECTOR2);
         }
 
         writeSector(map, system_img, MAP_SECTOR);
-        writeSector(files1, system_img, FILES_SECTOR1);
-        writeSector(files2, system_img, FILES_SECTOR2);
         writeSector(sector, system_img, SECTORS_SECTOR);
     } 
 

@@ -1,1 +1,1 @@
-gcc -Wall -Wextra additional/loadFile.c -o compiledResult/loadFile.o
+gcc -Wall -Wextra additional/loadFile.c -o compiledResult/loadFile
