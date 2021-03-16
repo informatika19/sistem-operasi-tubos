@@ -56,9 +56,27 @@ void copySourceFile(FILE *source, int srcSector, FILE *destination, int destSect
     }
 }
 
-void writeSector (char *buffer, FILE *file, int sector) {}
+// Tulis dari buffer ke file
+void writeSector (char *buffer, FILE *file, int sector) {
+    int i;
+    fseek(file, sector * SECTOR_SIZE, SEEK_SET);
 
-void writeName (char *entries, int index, char *name) {}
+    for (i = 0; i < SECTOR_SIZE; ++i) {
+        fputc(buffer[i], file);
+    }
+}
+
+void writeName (char *entries, int index, char *name) {
+    int i;
+
+    for (i = 0; name[i] != '\0'; ++i) {
+        entries[index * 16 + 2 + i] = name[i];
+    }
+
+    for (; i < 14; ++i) {
+        entries[index * 16 + 2 + i] = '\0';
+    }
+}
 
 int main(int argc, char* argv[]) {
     /*
@@ -137,9 +155,16 @@ int main(int argc, char* argv[]) {
 
         if (fileSecNum == 1) {
             files1[idx * 16] = 0xFF;
+            writeName(files1, idx, argv[1]);
         } else if (fileSecNum == 2) {
             files2[idx * 16] = 0xFF;
+            writeName(files2, idx, argv[1]);
         }
+
+        writeSector(map, system_img, MAP_SECTOR);
+        writeSector(files1, system_img, FILES_SECTOR1);
+        writeSector(files2, system_img, FILES_SECTOR2);
+        writeSector(sector, system_img, SECTORS_SECTOR);
     } 
 
     fclose(source_file);
