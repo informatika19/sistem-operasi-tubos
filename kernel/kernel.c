@@ -42,13 +42,12 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
     case 0x0:
         printString(BX);
         break;
-    case 0x1:
+    case 0x01:
         readString(BX);
         break;
-    //TODO
-    // case 0x2:
-    //     readSector(BX, CX);
-    //     break;
+    case 0x02:
+        readSector(BX, CX);
+        break;
     // case 0x03:
     //     writeSector(BX, CX);
     //     break;

@@ -3,7 +3,7 @@
 #define MAX_FILENAME 14
 #define ENTRY 0x10
 #define SOFFSET 0x1
-#define NAME_OFFSET 0x3
+#define NAME_OFFSET 0x2
 //Tabel Sectors
 #define MAP_SECTOR 0x100
 #define FILES_SECTOR 0x101

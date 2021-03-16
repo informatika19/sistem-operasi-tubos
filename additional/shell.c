@@ -13,7 +13,7 @@ void initShell(){ //Shell Init
     print("\r[Shell]\n");
     // print("\r>");
     while(1){ //shell main program
-        getCurrentDir(filesSector, currentDir); //get current directory
+        //getCurrentDir(filesSector, currentDir); //get current directory
         interrupt(0x10, 0x0200, 0, 0, 0x100 * cursorRow | 0X0);
         interrupt(0x21, 1, input, 0, 0);
         readInput(input, filesSector, currentDir, &cursorRow); //read user input then parse
@@ -37,9 +37,9 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     // print("\n"); debug
     // print(command);
     if(strcmp(command, "ls") == 0){ //if user input ls
-        ls(table, currentDir);
-        print("\r\nfolder");
-        *cursor = *cursor + 4;
+        ls(table, ROOT);
+        //print("\r\nfolder");
+        *cursor = *cursor + 10;
     } else if (strcmp(command, "cd") == 0){//if user input cd
         //cd(filesSector, &currentDir)
         print("\r\ncd");
@@ -57,17 +57,22 @@ void ls(char *dir, char currentDir){ //ls function
 
     char name[MAX_FILENAME]; //name variable
     char p, s;//parent and sector variable
-    
+    print("dir :\n");
+    print(dir);
+    print("\r\nsebelum for loop");
+    print("\n");
     for(i=0; i<MAX_DIR; i++){//looping through sectors
         p = dir[ENTRY*i];
         s = dir[ENTRY*i + SOFFSET];
-        if(p == currentDir && s!=EMPTY_FILES){
+        if(p == currentDir){
+            if (i==0)
+                print("\r");
             strncpy(name, dir+ENTRY*i+NAME_OFFSET, MAX_FILENAME);
             print(name);
             print(" | ");
         }
     }
-    print("\n");
+    print("\r\nsetelah for loop");
 }
 
 // void cd(char *dir, char *currentDir, char *arg){
