@@ -76,6 +76,22 @@ void strncpy(char *destination, char *source, int n){
     *destination = '\0';
 }
 
+void splitstring(char *src, char* part1, char* part2, char x) {
+    int i = 0;
+    int j = 0;
+    while (src[i] != '\0' && src[i] != x) {
+        part1[i] = src[i];
+        i++;
+    }
+    part1[i] = '\0';
+
+    while (src[i] != '\0') {
+        part2[j] = src[i];
+        i++;
+        j++;
+    }
+    part2[j] = '\0';
+}
 //a[3][5]
 //  11111 22222 33333
 //               a[2][1] = *(a+5i+j)

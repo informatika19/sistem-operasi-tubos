@@ -32,8 +32,11 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     // int i;
     // strCompare(input, "ls", &i);
     char command[16];
+    char arg[16];
     clear(command, 16);
-    strncopy(input, command, ' '); //split string and copy string before space
+    clear(arg, 16);
+    splitstring(input, command, arg, ' ');
+    // strncopy(input, command, ' '); //split string and copy string before space
     // print("\n"); debug
     // print(command);
     if(strcmp(command, "ls") == 0){ //if user input ls
@@ -42,6 +45,10 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
         *cursor = *cursor + 10;
     } else if (strcmp(command, "cd") == 0){//if user input cd
         //cd(filesSector, &currentDir)
+        print(command);
+        print("\n");
+        print(arg);
+        print("\n");
         print("\r\ncd");
     } else if (strcmp(command, "cat") == 0){//if user input cat
         print("\r\ncat");
