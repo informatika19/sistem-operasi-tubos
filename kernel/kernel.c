@@ -3,6 +3,7 @@ Made by TubOS
 1. Pratama Andiko           13519112
 2. Fabian Savero Diaz P.    13519140
 3. Fadel Ananda D.          13519146
+4. Alvin Rizqi A.           13519126
 */
 
 #include "kernel.h"
@@ -147,7 +148,93 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 
 
 void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
+        char map[512];
+    char files[512];
+    char directory[512];
+    char sector[512];
+    int iterfiles,itermap1,itermap2, itersector;
+    int foundfiles1 = 0, foundfiles2 = 0, foundkosong;
 
+    // baca semua yuk baca
+    readSector(map, 0x100);
+    readSector(files, 0x101);
+    readSector(directory, 0x102);
+    readSector(sector, 0x103);
+
+    //cek dir kosonk
+    iterfiles = 0;
+    while (files[iterfiles*16+1] != '\0' && iterfiles < 32){
+        iterfiles++;
+    }
+
+    if (iterfiles == 32){
+        printString("There's no empty directory");
+        *sectors = -2;
+        return;
+    }else{
+    //cek jumlah sektor di map
+    itermap1 = 0;
+    while (itermap1 < 256 && map[itermap1] != 0x00){
+        itermap1++;
+    }
+    if (itermap1 == 255){
+        printString("no, no empty sector");
+        *sectors = -3;
+        return;
+    }else{
+        while (buffer[itersector * 512] != '\0') { // cek semua buffer
+        //cek yg kosong dulu dongg
+        itermap2 = 0;
+        while (itermap2 < 256 && map[itermap2] != 0x00){
+            itermap2++;
+        }
+        if (itermap2 == 255){
+            printString("no, no empty sector");
+            *sectors = -3;
+            return;
+        }
+        //yuk bersih2 yuk
+        clear(buffer+itersector*512, 512);
+        // isi sektor terus tandain dech
+		writeSector(buffer + itersector * 512, itermap2);
+        map[itermap2] = 0xFF;
+		sectors[itermap1 * 16 + itersector] = itermap2;
+		++itersector;
+	}
+    }
+    }
+
+    // kalo pake break
+
+    /*for (iterfiles = 0; iterfiles < 32; iterfiles++){
+        if (files1[iterfiles*16+1] == "\0"){foundfiles1 = 1; break;}
+    }
+    if (foundfiles1 == 0){
+        for (iterfiles = 0; iterfiles < 32; iterfiles++){
+            if (files2[iterfiles*16+1] == "\0"){foundfiles2 = 1; break;}
+            }
+        if (foundfiles2 == 0){
+            printString("There's no empty directory.");
+            return;
+        }
+    }
+    */
+
+    /*for (itermap=0; itermap<256; itermap++){
+        if (map[itermap] == 0x00){
+            break;
+        }
+    }
+    if (itermap ==  255){
+        printString("no, no empty sector");
+        return;
+    }*/
+    //write semua yuk
+    writeSector(map, 0x100);
+    writeSector(files, 0x101);
+    writeSector(directory, 0x102);
+    writeSector(sector, 0x103);
+    *sectors = 0;
 }
 
 //ADDITIONAL FUNCTION
