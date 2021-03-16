@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
 
     if (argc > 2) {
         printf("Masukkan nama file yang akan di-load: \n");
-        return;
+        return -1;
     }
 
     // Buka Source File
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
     source_file = fopen(argv[1], "r");
     if (source_file == 0) {
         printf("Tidak ada file yang ditemukan\n");
-        return;
+        return -1;
     }
 
     // Read and update system image
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
     system_img = fopen("system.img", "r+"); 
     if (system_img == 0) {
         printf("File system.img tidak ditemukan\n");
-        return;
+        return -1;
     }
 
     // Load map sector
@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
     // Jika tidak ada di files1, cek files2
     if (idx == -1) {
         idx = findFreeEntry(files2);
-        int fileSecNum = 2;
+        fileSecNum = 2;
     }
 
     if (idx != -1) {
@@ -141,7 +141,7 @@ int main(int argc, char* argv[]) {
 
         while (!feof(source_file)) {
             int sectorIdx = findFreeSector(map);
-            if (sector != -1) {
+            if (sectorIdx != -1) {
                 copySourceFile(source_file, sectorCount, system_img, sectorIdx);
                 printf("%s telah di-copy ke sector %d\n", argv[1], sectorIdx);
                 map[sectorIdx] = 0xFF;
@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
                 ++sectorCount;
             } else {
                 printf("Tidak bisa load file lagi\n");
-                return;
+                return -1;
             }
         }
 
