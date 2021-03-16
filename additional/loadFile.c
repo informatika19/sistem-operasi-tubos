@@ -78,7 +78,7 @@ void writeName (char *entries, int index, char *name) {
     }
 }
 
-main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     /*
     Alur Program loadFile:
     1. Membuka source file
@@ -91,7 +91,7 @@ main(int argc, char* argv[]) {
 
     if (argc > 2) {
         printf("Masukkan nama file yang akan di-load\n");
-        return;
+        return -1;
     }
 
     // Buka Source File
@@ -99,7 +99,7 @@ main(int argc, char* argv[]) {
     source_file = fopen(argv[1], "r");
     if (source_file == 0) {
         printf("Tidak ada file yang ditemukan\n");
-        return;
+        return -1;
     }
 
     // Read and update system image
@@ -107,7 +107,7 @@ main(int argc, char* argv[]) {
     system_img = fopen("system.img", "r+"); 
     if (system_img == 0) {
         printf("File system.img tidak ditemukan\n");
-        return;
+        return -1;
     }
 
     // Load map sector
@@ -138,28 +138,33 @@ main(int argc, char* argv[]) {
 
     if (idx != -1) {
         int sectorCount = 0;
+        int s;
 
         while (!feof(source_file)) {
             int sectorIdx = findFreeSector(map);
             if (sectorIdx != -1) {
                 copySourceFile(source_file, sectorCount, system_img, sectorIdx);
                 printf("%s telah di-copy ke sector %d\n", argv[1], sectorIdx);
+                s = sectorIdx;
                 map[sectorIdx] = 0xFF;
                 sector[idx * 16 + sectorCount] = sectorIdx;
                 ++sectorCount;
             } else {
                 printf("Tidak bisa load file lagi\n");
-                return;
+                return -1;
             }
         }
 
+        printf("%d", s);
         if (fileSecNum == 1) {
             files1[idx * 16] = 0xFF;
+            files1[idx * 16 + 1] = s;
             writeName(files1, idx, argv[1]);
             writeSector(files1, system_img, FILES_SECTOR1);
         
         } else if (fileSecNum == 2) {
             files2[idx * 16] = 0xFF;
+            files2[idx * 16 + 1] = s;
             writeName(files2, idx, argv[1]);
             writeSector(files2, system_img, FILES_SECTOR2);
         }
