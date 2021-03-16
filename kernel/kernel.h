@@ -13,6 +13,7 @@
 #define COLOR_BLACK 0X0
 #define TRUE 1
 #define FALSE 0
+#define SECTOR_SIZE 512
 
 /* fungsi kernel yang akan diimplementasikan*/
 //MILESTONE 1

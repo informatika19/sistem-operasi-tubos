@@ -7,3 +7,4 @@ void strncopy(char* src, char* dest, char x);
 // void splitsting(char *input, )
 void parseInput(char *input, char *result);
 void strcopy(char *src, char *dest);
+void copySegmentSectorSectors(char *dest, char *src, int n);

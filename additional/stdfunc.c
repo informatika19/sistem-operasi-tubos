@@ -80,3 +80,11 @@ void strncpy(char *destination, char *source, int n){
 //  11111 22222 33333
 //               a[2][1] = *(a+5i+j)
 // input [128][16];
+
+void copySegmentSectorSectors(char *dest, char *src, int n) {
+    int i = 0;
+    while (src[i] != '\0' && i < n) {
+        dest[i] = src[i];
+        i++;
+    }
+}

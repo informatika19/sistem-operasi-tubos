@@ -142,8 +142,56 @@ void writeSector(char *buffer, int sector){
 }
 
 void readFile(char *buffer, char *path, int *result, char parentIndex){
-    // /* Read in the directory sector */
-    // readSector(buffer, 2);  
+	char sectorFiles[SECTOR_SIZE*2], sectorSectors[SECTOR_SIZE], segmentSectorSectors[SECTOR_SIZE], fileNameBuffer[14], idxEntrySectors, idxSegmentTarget;
+
+	int i, j, fileFound;
+	fileFound = 0;//belum ditemukan
+
+	//read sector
+	readSector(sectorFiles, 0x101);
+	readSector(sectorFiles + SECTOR_SIZE, 0x102);
+
+	//cek panjang filename valid atau tidak
+	if (strlen(path) <= 14)
+	{
+		//cari filename pada sector files
+		for (i = 0; i < (SECTOR_SIZE*2); i+=16)
+		{
+			if (sectorFiles[i] == parentIndex)//cari file yang index 0(P) == parentIndex
+			{
+				clear(fileNameBuffer,14);//clear buffer filename
+				strncpy(fileNameBuffer,sectorFiles[i+2],14); //copy se
+				if (strcmp(fileNameBuffer,path) == 0)//true
+				{
+					fileFound = 1;//file ditemukan
+					idxEntrySectors = sectorFiles[i+1];//index S
+					break;
+				}
+			}	
+		}
+
+		//jika file ditemukan copy dari sector sectors ke buffer
+		if (fileFound == 1)
+		{
+			readSector(sectorSectors, 0x103);
+			idxSegmentTarget = sectorSectors[idxEntrySectors*16];//idx 1 segment pada sector Sectors
+			for (j = 0; j < 16 && sectorSectors[idxEntrySectors*16 + j] != 0x00; j++)
+			{
+				clear(segmentSectorSectors,SECTOR_SIZE);
+				readSector(segmentSectorSectors, idxSegmentTarget);
+            	copySegmentSectorSectors((buffer+j*SECTOR_SIZE), segmentSectorSectors, SECTOR_SIZE);//copy segment tersebut ke buffer
+			}
+			*result = 1;//File tidak ditemukan (readFile)
+		}
+
+		//file tidak ditemukan
+		else
+		{
+			*result = -1;//File tidak ditemukan (readFile)
+		}
+	}else{//filename tidak valid(lebih dari 14 byte)
+		*result = -1;//File tidak ditemukan (readFile)
+	}
 }
 
 
