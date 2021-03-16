@@ -1,22 +1,22 @@
 #include "shell.h"
 
 int cursorRow = 2;
-void initShell(){
-    char filesSector[2][SECTOR_SIZE]; 
-    char currentDir = ROOT;
+void initShell(){ //Shell Init
+    char filesSector[2][SECTOR_SIZE]; //contains filesystem files
+    char currentDir = ROOT; //current direcory (default root)
     
-    char input[128];
+    char input[128]; //input command
 
-    getDir(filesSector);
+    getDir(filesSector); //readsector then assign it to filesSector
     // int y = 1;
-    interrupt(0x10, 0x0003, 0, 0, 0);
+    interrupt(0x10, 0x0003, 0, 0, 0); //clearscreen
     print("\r[Shell]\n");
     // print("\r>");
-    while(1){
-        getCurrentDir(filesSector, currentDir);
+    while(1){ //shell main program
+        getCurrentDir(filesSector, currentDir); //get current directory
         interrupt(0x10, 0x0200, 0, 0, 0x100 * cursorRow | 0X0);
         interrupt(0x21, 1, input, 0, 0);
-        readInput(input);
+        readInput(input); //read user input then parse
         print("\n");
         cursorRow+=3;
     }
@@ -33,31 +33,31 @@ void readInput(char *input){
     // strCompare(input, "ls", &i);
     char command[16];
     clear(command, 16);
-    strncopy(input, command, ' ');
+    strncopy(input, command, ' '); //split string and copy string before space
     // print("\n"); debug
     // print(command);
-    if(strcmp(command, "ls") == 0){
+    if(strcmp(command, "ls") == 0){ //if user input ls
         //ls(filesSector, currentDir);
         print("\r\nls");
-    } else if (strcmp(command, "cd") == 0){
+    } else if (strcmp(command, "cd") == 0){//if user input cd
         //cd(filesSector, &currentDir)
         print("\r\ncd");
-    } else if (strcmp(command, "cat") == 0){
+    } else if (strcmp(command, "cat") == 0){//if user input cat
         print("\r\ncat");
-    } else if (strcmp(command, "ln") == 0){
+    } else if (strcmp(command, "ln") == 0){//if user input ln
         print("\r\nln");
     } else{
         print("\r\nInvalid Command");
     }
 }
 
-void ls(char *dir, char currentDir){
+void ls(char *dir, char currentDir){ //ls function
     int i;
 
-    char name[MAX_FILENAME];
-    char p, s;
+    char name[MAX_FILENAME]; //name variable
+    char p, s;//parent and sector variable
     
-    for(i=0; i<MAX_DIR; i++){
+    for(i=0; i<MAX_DIR; i++){//looping through sectors
         p = dir[ENTRY*i];
         s = dir[ENTRY*i + SOFFSET];
         if(p == currentDir && s!=EMPTY_FILES){
@@ -73,7 +73,7 @@ void ls(char *dir, char currentDir){
 //     int i;
 // }
 
-void cat(char *name, char currentDir){
+void cat(char *name, char currentDir){//read file
     char content[8192];
     int returnRead;
     readFile(content, name, &returnRead, currentDir);
