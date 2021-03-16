@@ -16,9 +16,9 @@ void initShell(){ //Shell Init
         getCurrentDir(filesSector, currentDir); //get current directory
         interrupt(0x10, 0x0200, 0, 0, 0x100 * cursorRow | 0X0);
         interrupt(0x21, 1, input, 0, 0);
-        readInput(input); //read user input then parse
+        readInput(input, filesSector, currentDir, &cursorRow); //read user input then parse
         print("\n");
-        cursorRow+=3;
+        // cursorRow+=3;
     }
 }
 
@@ -26,7 +26,7 @@ void print(char *buff){
     interrupt(0x21, 0, buff, 0, 0);
 }
 
-void readInput(char *input){
+void readInput(char *input, char *table, char currentDir, int *cursor){
     // print(input, &cursorRow);
     //TODO cd, cat, ls, ln
     // int i;
@@ -37,8 +37,9 @@ void readInput(char *input){
     // print("\n"); debug
     // print(command);
     if(strcmp(command, "ls") == 0){ //if user input ls
-        //ls(filesSector, currentDir);
-        print("\r\nls");
+        ls(table, currentDir);
+        print("\r\nfolder");
+        *cursor = *cursor + 4;
     } else if (strcmp(command, "cd") == 0){//if user input cd
         //cd(filesSector, &currentDir)
         print("\r\ncd");

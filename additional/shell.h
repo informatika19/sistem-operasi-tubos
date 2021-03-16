@@ -13,7 +13,7 @@
 #define EMPTY_FILES 0xDE
 
 void print(char *buff);
-void readInput(char *input);
+void readInput(char *input, char *table, char currentDir);
 void ls(char *dir, char currentDir);
 void getDir(char *dir);
 // void cd(char *dir, char currentDir);
