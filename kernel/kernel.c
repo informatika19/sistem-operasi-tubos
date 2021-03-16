@@ -195,30 +195,31 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 
 
 void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
-        char map[512];
-    char files[512];
-    char directory[512];
+    char map[512];
+    char files[512*2];
     char sector[512];
+    char fileNameBuffer[14];
     int iterfiles,itermap1,itermap2, itersector;
-    int foundfiles1 = 0, foundfiles2 = 0, foundkosong;
+    int fileFound,i,j;
 
     // baca semua yuk baca
     readSector(map, 0x100);
     readSector(files, 0x101);
-    readSector(directory, 0x102);
+    readSector(files+512, 0x102);
     readSector(sector, 0x103);
 
     //cek dir kosonk
     iterfiles = 0;
-    while (files[iterfiles*16+1] != '\0' && iterfiles < 32){
+    while (files[iterfiles*16+1] != '\0' && iterfiles < 64){
         iterfiles++;
     }
 
-    if (iterfiles == 32){
+    if (iterfiles == 64){
         printString("There's no empty directory");
         *sectors = -2;
         return;
-    }else{
+    }
+    else{
     //cek jumlah sektor di map
     itermap1 = 0;
     while (itermap1 < 256 && map[itermap1] != 0x00){
@@ -228,9 +229,38 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
         printString("no, no empty sector");
         *sectors = -3;
         return;
-    }else{
+    }
+    else{
+        if (strlen(path) <= 14){
+        //cari filename pada sector files
+            fileFound =0;
+            for (i = 0; i < (512*2); i+=16)
+            {
+                if (files[i] == parentIndex)//cari file yang index 0(P) == parentIndex
+                {
+                    clear(fileNameBuffer,14);//clear buffer filename
+                    strncpy(fileNameBuffer,files[i+2],14); //copy se
+                    if (strcmp(fileNameBuffer,path) == 0)//true
+                    {
+                        fileFound = 1;//file ditemukan
+                        break;
+                    }
+                }	
+            }
+            if (fileFound == 1){
+                *sectors = -1;
+                return;
+            }
+            else{ 
+            //isi sektor dengan nama file
+	        j = 0;
+	        while (path[j] != '\0') {
+		        files[iterfiles * 16 + 2 + j] = path[j];
+                ++j;
+	        }
+            }
         while (buffer[itersector * 512] != '\0') { // cek semua buffer
-        //cek yg kosong dulu dongg
+        //cek yg kosong di map
         itermap2 = 0;
         while (itermap2 < 256 && map[itermap2] != 0x00){
             itermap2++;
@@ -240,48 +270,27 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
             *sectors = -3;
             return;
         }
-        //yuk bersih2 yuk
+        //bersihin sector
         clear(buffer+itersector*512, 512);
-        // isi sektor terus tandain dech
+        // isi sektor terus tandain
 		writeSector(buffer + itersector * 512, itermap2);
         map[itermap2] = 0xFF;
 		sectors[itermap1 * 16 + itersector] = itermap2;
 		++itersector;
-	}
+	    }
+         //write semua
+        writeSector(map, 0x100);
+        writeSector(files, 0x101);
+        writeSector(files+512, 0x102);
+        writeSector(sector, 0x103);
+        *sectors = 0;
     }
-    }
-
-    // kalo pake break
-
-    /*for (iterfiles = 0; iterfiles < 32; iterfiles++){
-        if (files1[iterfiles*16+1] == "\0"){foundfiles1 = 1; break;}
-    }
-    if (foundfiles1 == 0){
-        for (iterfiles = 0; iterfiles < 32; iterfiles++){
-            if (files2[iterfiles*16+1] == "\0"){foundfiles2 = 1; break;}
-            }
-        if (foundfiles2 == 0){
-            printString("There's no empty directory.");
-            return;
-        }
-    }
-    */
-
-    /*for (itermap=0; itermap<256; itermap++){
-        if (map[itermap] == 0x00){
-            break;
-        }
-    }
-    if (itermap ==  255){
-        printString("no, no empty sector");
+    else{
+        *sectors = -4;
         return;
-    }*/
-    //write semua yuk
-    writeSector(map, 0x100);
-    writeSector(files, 0x101);
-    writeSector(directory, 0x102);
-    writeSector(sector, 0x103);
-    *sectors = 0;
+        }
+        }
+    }
 }
 
 //ADDITIONAL FUNCTION
