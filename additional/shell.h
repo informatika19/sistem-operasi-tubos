@@ -13,9 +13,9 @@
 #define EMPTY_FILES 0xDE
 
 void print(char *buff);
-void readInput(char *input, char *table, char currentDir);
+void readInput(char *input, char *table, char currentDir, int *cursor);
 void ls(char *dir, char currentDir);
 void getDir(char *dir);
 // void cd(char *dir, char currentDir);
-void cat(char *name, char currentDir);
+void cat(char *table, char *fname, char currentDir);
 void getCurrentDir(char *dir, char currentDir);

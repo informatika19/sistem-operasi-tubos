@@ -44,9 +44,9 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
         //cd(filesSector, &currentDir)
         print("\r\ncd");
     } else if (strcmp(command, "cat") == 0){//if user input cat
-        cat(table, currentDir);
+        cat(table, " ",currentDir);
         //print("\r\ncat");
-        *cursor = *cursor + 3;
+        *cursor = *cursor + 4;
     } else if (strcmp(command, "ln") == 0){//if user input ln
         print("\r\nln");
     } else{
@@ -78,14 +78,26 @@ void ls(char *dir, char currentDir){ //ls function
 //     int i;
 // }
 
-void cat(char *name, char currentDir){//read file
+void cat(char *table, char *fname, char currentDir){//read file
+    char input[1024];
     char content[8192];
     int returnRead;
-    readFile(content, name, &returnRead, currentDir);
-    if (returnRead == -1){
-        print("\r\nfile not found");
+    
+    if(strcmp(fname, " ")==0){
+        do{
+            print("\r\n");
+            interrupt(0x21, 1, input, 0, 0);
+            print("\r\n");
+            print(input);
+        } while(strcmp(input, "exit")!=0);
+        interrupt(0x10, 0x0003, 0, 0, 0);
     } else{
-        print(content);
+        readFile(content, table, &returnRead, currentDir);
+        if(returnRead == -1){
+            print("\r\nfile not found");
+        } else{
+            print(content);
+        }
     }
 }
 
