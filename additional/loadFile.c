@@ -78,7 +78,7 @@ void writeName (char *entries, int index, char *name) {
     }
 }
 
-int main(int argc, char* argv[]) {
+main(int argc, char* argv[]) {
     /*
     Alur Program loadFile:
     1. Membuka source file
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
 
     if (argc > 2) {
         printf("Masukkan nama file yang akan di-load\n");
-        return -1;
+        return;
     }
 
     // Buka Source File
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
     source_file = fopen(argv[1], "r");
     if (source_file == 0) {
         printf("Tidak ada file yang ditemukan\n");
-        return -1;
+        return;
     }
 
     // Read and update system image
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
     system_img = fopen("system.img", "r+"); 
     if (system_img == 0) {
         printf("File system.img tidak ditemukan\n");
-        return -1;
+        return;
     }
 
     // Load map sector
@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
                 ++sectorCount;
             } else {
                 printf("Tidak bisa load file lagi\n");
-                return -1;
+                return;
             }
         }
 
