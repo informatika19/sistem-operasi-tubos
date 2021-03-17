@@ -199,8 +199,9 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
     char files[512*2];
     char sector[512];
     char fileNameBuffer[14];
-    int iterfiles,itermap1,itermap2, itersector;
-    int fileFound,i,j;
+    char currentParent;
+    int iterfiles,itermap1,itermap2, itersector, iterpath,iterpath1;
+    int fileFound,i,j,foundPath;
 
     // baca semua yuk baca
     readSector(map, 0x100);
@@ -231,7 +232,16 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
         return;
     }
     else{
-        if (strlen(path) <= 14){
+        // cari path untuk file
+        foundPath =0; iterpath =0; currentParent = parentIndex;
+        while (!foundPath && iterpath <=  64){
+            if (files[iterpath*16] == currentParent){
+                foundPath = 1;
+            }
+            else{++iterpath;}
+        }
+        if (!foundPath) {*sectors = -4;
+        return;}else{
         //cari filename pada sector files
             fileFound =0;
             for (i = 0; i < (512*2); i+=16)
@@ -284,12 +294,8 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex){
         writeSector(files+512, 0x102);
         writeSector(sector, 0x103);
         *sectors = 0;
+        }
     }
-    else{
-        *sectors = -4;
-        return;
-        }
-        }
     }
 }
 

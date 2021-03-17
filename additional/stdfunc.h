@@ -6,5 +6,8 @@ int div(int x, int y);
 void strncopy(char* src, char* dest, char x);
 void splitstring(char *src, char* part1, char* part2, char x);
 void strcpybounded(char *dest, char *src, int n);
+void strncpy(char *destination, char *source, int n);
+// void splitsting(char *input, )
+void parseInput(char *arg, char *result);
 void strcopy(char *src, char *dest);
 void copySegmentSectorSectors(char *dest, char *src, int n);

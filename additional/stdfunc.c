@@ -113,3 +113,23 @@ void copySegmentSectorSectors(char *dest, char *src, int n) {
         i++;
     }
 }
+
+void parseInput(char *arg, char *result){
+	int i=0;
+	int k=0;
+	int j;
+	while(arg[i]!='\0'){
+		//printf("%d", i);
+		if(arg[i] == ' '){
+			j = i;
+			j++;
+			break;
+		}
+		i++;
+	}
+	while(arg[j]!='\0'){
+		result[k] = arg[j];
+		k++;
+		j++;
+	} result[k] = '\0';
+}

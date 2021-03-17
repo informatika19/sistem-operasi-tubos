@@ -32,15 +32,14 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     // int i;
     // strCompare(input, "ls", &i);
     char command[16];
-    char arg[16];
+    char arg[256];
     clear(command, 16);
-    clear(arg, 16);
+    clear(arg, 256);
     splitstring(input, command, arg, ' ');
-    // strncopy(input, command, ' '); //split string and copy string before space
     // print("\n"); debug
     // print(command);
     if(strcmp(command, "ls") == 0){ //if user input ls
-        ls(table, ROOT);
+        ls(table, currentDir);
         //print("\r\nfolder");
         *cursor = *cursor + 3;
     } else if (strcmp(command, "cd") == 0){//if user input cd
@@ -48,7 +47,11 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
         print("\r\ncd");
         *cursor = *cursor + 3;
     } else if (strcmp(command, "cat") == 0){//if user input cat
-        print("\r\ncat");
+        cat("tes1.txt", currentDir);
+        print("\r\n");
+        print(arg);
+        //print("\r\ncat");
+        *cursor = *cursor + 4;
     } else if (strcmp(command, "ln") == 0){//if user input ln
         print("\r\nln");
     } else{
@@ -154,14 +157,26 @@ char cd(char *dir, char currentDir, char *argument){
     }
 }
 
-void cat(char *name, char currentDir){//read file
+void cat(char *fname, char currentDir){//read file
+    char input[1024];
     char content[8192];
     int returnRead;
-    readFile(content, name, &returnRead, currentDir);
-    if (returnRead == -1){
-        print("file not found");
+    
+    if(strcmp(fname, " ")==0){
+        do{
+            print("\r\n");
+            interrupt(0x21, 1, input, 0, 0);
+            print("\r\n");
+            print(input);
+        } while(strcmp(input, "exit")!=0);
+        interrupt(0x10, 0x0003, 0, 0, 0);
     } else{
-        print(content);
+        readFile(content, fname, &returnRead, currentDir);
+        if(returnRead == -1){
+            print("\r\nfile not found");
+        } else{
+            print(content);
+        }
     }
 }
 

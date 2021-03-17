@@ -16,6 +16,6 @@ void print(char *buff);
 void readInput(char *input, char *table, char currentDir, int *cursor);
 void ls(char *dir, char currentDir);
 void getDir(char *dir);
-int cd(char *dir, char currentDir, char *argument);
+char cd(char *dir, char currentDir, char *argument);
 void cat(char *name, char currentDir);
 void getCurrentDir(char *dir, char currentDir);
