@@ -41,16 +41,17 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     } else if (strcmp(command, "cd") == 0){//if user input cd
         currentDir = cd(table, currentDir, arg);
         print("\r\ncd");
-        *cursor = *cursor + 3;
+        *cursor = *cursor + 6;
     } else if (strcmp(command, "cat") == 0){//if user input cat
+        //cat(arg, currentDir);
         cat("tes4.txt", currentDir);
-        //cat("tes4.txt", currentDir);
-        print("\r\n");
-        print(arg);
+        // print("\r\n");
+        // print(arg);
         //print("\r\ncat");
-        *cursor = *cursor + 4;
+        *cursor = *cursor + 3;
     } else if (strcmp(command, "ln") == 0){//if user input ln
         print("\r\nln");
+        *cursor = *cursor + 3;
     } else{
         print("\r\nInvalid Command");
         *cursor = *cursor + 3;
