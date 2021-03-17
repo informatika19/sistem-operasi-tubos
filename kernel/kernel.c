@@ -159,7 +159,7 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 			if (sectorFiles[i] == parentIndex)//cari file yang index 0(P) == parentIndex
 			{
 				clear(fileNameBuffer,14);//clear buffer filename
-				strncpy(fileNameBuffer,sectorFiles[i+2],14); //copy se
+				strncpy(fileNameBuffer,sectorFiles+2,14); //copy se
 				if (strcmp(fileNameBuffer,path) == 0)//true
 				{
 					fileFound = 1;//file ditemukan
@@ -179,6 +179,7 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 				clear(segmentSectorSectors,SECTOR_SIZE);
 				readSector(segmentSectorSectors, idxSegmentTarget);
             	copySegmentSectorSectors((buffer+j*SECTOR_SIZE), segmentSectorSectors, SECTOR_SIZE);//copy segment tersebut ke buffer
+			    idxSegmentTarget = sectorSectors[idxEntrySectors*16 + j];//idx 1 segment pada sector Sectors
 			}
 			*result = 1;//File tidak ditemukan (readFile)
 		}
