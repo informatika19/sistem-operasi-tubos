@@ -33,13 +33,13 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     clear(arg, 256);
     splitstring(input, command, arg, ' ');
     
-    if(strcmp(command, "ls") == 0){ //if user input ls
+    if(strcmp(input, "ls") == 0){ //if user input ls
         ls(table, currentDir);
         *cursor = *cursor + 4;
     } else if (strcmp(command, "cd") == 0){//if user input cd
         currentDir = cd(table, currentDir, arg);
         print("\r\ncd");
-        *cursor = *cursor + 6;
+        *cursor = *cursor + 3;
     } else if (strcmp(command, "cat") == 0){ //if user input cat
         //user can input either "cat type" or "cat {filename}"
         cat(arg, currentDir);
