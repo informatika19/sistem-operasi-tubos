@@ -11,7 +11,7 @@ int main()
 {
     int y = 1;
     char string[1024];
-    //setupBoot(); // menuliskan logo ke layar (bonus)
+    setupBoot(); // menuliskan logo ke layar (bonus)
     interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
 
     makeInterrupt21();
