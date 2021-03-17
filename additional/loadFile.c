@@ -41,6 +41,18 @@ int findFreeSector(char* map) {
     return -1;
 }
 
+int findS(char* sector) {
+    int i;
+
+    for (i = 0; i < 512; i+=16) {
+        if (sector[i] == 0x00) {
+            return i/16 - 1;
+        }
+    }
+
+    return -1;
+}
+
 // Mengcopy isi source file ke system.img
 void copySourceFile(FILE *source, int srcSector, FILE *destination, int destSector) {
     int i;
@@ -66,6 +78,7 @@ void writeSector (char *buffer, FILE *file, int sector) {
     }
 }
 
+// Tulis nama file
 void writeName (char *entries, int index, char *name) {
     int i;
 
@@ -145,7 +158,6 @@ int main(int argc, char* argv[]) {
             if (sectorIdx != -1) {
                 copySourceFile(source_file, sectorCount, system_img, sectorIdx);
                 printf("%s telah di-copy ke sector %d\n", argv[1], sectorIdx);
-                s = sectorIdx;
                 map[sectorIdx] = 0xFF;
                 sector[idx * 16 + sectorCount] = sectorIdx;
                 ++sectorCount;
@@ -155,14 +167,15 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        printf("%d", s);
-        if (fileSecNum == 1) {
+        s = findS(sector);
+
+        if (fileSecNum == 1 && s != -1) {
             files1[idx * 16] = 0xFF;
             files1[idx * 16 + 1] = s;
             writeName(files1, idx, argv[1]);
             writeSector(files1, system_img, FILES_SECTOR1);
         
-        } else if (fileSecNum == 2) {
+        } else if (fileSecNum == 2 && s != -1) {
             files2[idx * 16] = 0xFF;
             files2[idx * 16 + 1] = s;
             writeName(files2, idx, argv[1]);
