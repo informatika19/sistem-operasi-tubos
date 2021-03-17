@@ -2,3 +2,5 @@ bootloader
 kernel
 kernel_asm.o
 kernel.o
+shell.o
+stdfunc.o
