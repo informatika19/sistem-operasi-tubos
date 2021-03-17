@@ -43,10 +43,10 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
         print("\r\ncd");
         *cursor = *cursor + 6;
     } else if (strcmp(command, "cat") == 0){//if user input cat
-        cat("tes.txt", currentDir);
+        cat(arg, currentDir);
         //cat("tes4.txt", currentDir);
-        print("\r\n");
-        print(arg);
+        // print("\r\n");
+        // print(arg);
         //print("\r\ncat");
         *cursor = *cursor + 3;
     } else if (strcmp(command, "ln") == 0){//if user input ln
@@ -155,7 +155,7 @@ void cat(char *fname, char currentDir){//read file
     char content[8192];
     int returnRead;
     
-    if(strcmp(fname, " ")==0){
+    if(strcmp(fname, "")==0){
         do{
             print("\r\n");
             interrupt(0x21, 1, input, 0, 0);
