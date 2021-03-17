@@ -43,7 +43,7 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
         print("\r\ncd");
         *cursor = *cursor + 3;
     } else if (strcmp(command, "cat") == 0){//if user input cat
-        cat("tes4.txt", currentDir);
+        cat("tes.txt", currentDir);
         //cat("tes4.txt", currentDir);
         print("\r\n");
         print(arg);
