@@ -2,9 +2,9 @@
 > Dibuat oleh TubOS
 ## Anggota Kelompok
 1. Pratama Andiko           (13519112)  
-2. Fabian Savero Diaz P.    (13519140)  
-3. Fadel Ananda Dotty       (13519146)  
-
+2. Alvin Rizqi Alfisyahrin  (13519126)
+3. Fabian Savero Diaz P.    (13519140)  
+4. Fadel Ananda Dotty       (13519146)  
 ## How to run
 1. Open img directory
 2. Open terminal in img directory
