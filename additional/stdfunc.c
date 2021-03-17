@@ -47,15 +47,15 @@ int strlen(char* string){
 //     *str2 = '\0';
 // }
 
-void strncopy(char* src, char* dest, char x){
+// void strncopy(char* src, char* dest, char x){
 
-    int i = 0;
-    while (src[i] != '\0' && src[i] != x) {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
-}
+//     int i = 0;
+//     while (src[i] != '\0' && src[i] != x) {
+//         dest[i] = src[i];
+//         i++;
+//     }
+//     dest[i] = '\0';
+// }
 
 void strcopy(char *src, char *dest) {
     int i = 0;
@@ -93,7 +93,7 @@ void splitstring(char *src, char* part1, char* part2, char x) {
         i++;
     }
     part1[i] = '\0';
-
+    i++;
     while (src[i] != '\0') {
         part2[j] = src[i];
         i++;
@@ -112,24 +112,4 @@ void copySegmentSectorSectors(char *dest, char *src, int n) {
         dest[i] = src[i];
         i++;
     }
-}
-
-void parseInput(char *arg, char *result){
-	int i=0;
-	int k=0;
-	int j;
-	while(arg[i]!='\0'){
-		//printf("%d", i);
-		if(arg[i] == ' '){
-			j = i;
-			j++;
-			break;
-		}
-		i++;
-	}
-	while(arg[j]!='\0'){
-		result[k] = arg[j];
-		k++;
-		j++;
-	} result[k] = '\0';
 }
