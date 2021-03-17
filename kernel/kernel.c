@@ -181,13 +181,12 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
             	copySegmentSectorSectors((buffer+j*SECTOR_SIZE), segmentSectorSectors, SECTOR_SIZE);//copy segment tersebut ke buffer
 			    idxSegmentTarget = sectorSectors[idxEntrySectors*16 + j];//idx 1 segment pada sector Sectors
 			}
-			*result = 1;//File tidak ditemukan (readFile)
+			*result = 1;//File ditemukan (readFile)
 		}
 
 		//file tidak ditemukan
 		else
 		{
-            printString("sini");
 			*result = -1;//File tidak ditemukan (readFile)
 		}
 	}else{//filename tidak valid(lebih dari 14 byte)

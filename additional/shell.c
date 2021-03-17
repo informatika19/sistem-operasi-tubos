@@ -36,22 +36,22 @@ void readInput(char *input, char *table, char currentDir, int *cursor){
     
     if(strcmp(command, "ls") == 0){ //if user input ls
         ls(table, currentDir);
-        //print("\r\nfolder");
         *cursor = *cursor + 4;
     } else if (strcmp(command, "cd") == 0){//if user input cd
         currentDir = cd(table, currentDir, arg);
         print("\r\ncd");
         *cursor = *cursor + 6;
-    } else if (strcmp(command, "cat") == 0){//if user input cat
+    } else if (strcmp(command, "cat") == 0){ //if user input cat
+        //user can input either "cat type" or "cat {filename}"
         cat(arg, currentDir);
-        //cat("tes4.txt", currentDir);
-        // print("\r\n");
-        // print(arg);
-        //print("\r\ncat");
         *cursor = *cursor + 3;
     } else if (strcmp(command, "ln") == 0){//if user input ln
         print("\r\nln");
         *cursor = *cursor + 3;
+    } else if(strcmp(command, "reset") == 0){ //reset screen
+        interrupt(0x10, 0x0003, 0, 0, 0);
+        print("\r[Shell]");
+        *cursor = 2;
     } else{
         print("\r\nInvalid Command");
         *cursor = *cursor + 3;
@@ -155,7 +155,7 @@ void cat(char *fname, char currentDir){//read file
     char content[8192];
     int returnRead;
     
-    if(strcmp(fname, "")==0){
+    if(strcmp(fname, "type")==0){
         do{
             print("\r\n");
             interrupt(0x21, 1, input, 0, 0);
