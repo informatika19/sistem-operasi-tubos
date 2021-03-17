@@ -32,7 +32,7 @@ int findFreeEntry(char* entry) {
 int findFreeSector(char* map) {
     int i;
 
-    for (i = 0; i < 32; ++i) {
+    for (i = 0; i < 512; ++i) { //TODO check edge case
         if (map[i] == 0x00) {
             return i;
         }
