@@ -8,11 +8,10 @@ void initShell(){ //Shell Init
     char input[128]; //input command
 
     getDir(filesSector); //readsector then assign it to filesSector
-    // int y = 1;
     interrupt(0x10, 0x0003, 0, 0, 0); //clearscreen
     print("\r[Shell]\n");
-    // print("\r>");
     while(1){ //shell main program
+        clear(input, 128);
         getCurrentDir(filesSector, currentDir); //get current directory
         interrupt(0x10, 0x0200, 0, 0, 0x100 * cursorRow | 0X0);
         interrupt(0x21, 1, input, 0, 0);
@@ -155,7 +154,7 @@ void cat(char *fname, char currentDir){//read file
     char content[8192];
     int returnRead;
     
-    if(strcmp(fname, "type")==0){
+    if(strcmp(fname, "")==0){
         do{
             print("\r\n");
             interrupt(0x21, 1, input, 0, 0);
@@ -163,7 +162,8 @@ void cat(char *fname, char currentDir){//read file
             print(input);
         } while(strcmp(input, "exit")!=0);
         interrupt(0x10, 0x0003, 0, 0, 0);
-    } else{
+    }
+    else{
         readFile(content, fname, &returnRead, currentDir);
         if(returnRead == -1){
             print("\r\nfile not found");
