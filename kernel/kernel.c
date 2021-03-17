@@ -159,7 +159,7 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 			if (sectorFiles[i] == parentIndex)//cari file yang index 0(P) == parentIndex
 			{
 				clear(fileNameBuffer,14);//clear buffer filename
-				strncpy(fileNameBuffer,sectorFiles+2,14); //copy se
+				strncpy(fileNameBuffer,sectorFiles+i+2,14); //copy se
 				if (strcmp(fileNameBuffer,path) == 0)//true
 				{
 					fileFound = 1;//file ditemukan
@@ -187,6 +187,7 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 		//file tidak ditemukan
 		else
 		{
+            printString("sini");
 			*result = -1;//File tidak ditemukan (readFile)
 		}
 	}else{//filename tidak valid(lebih dari 14 byte)
