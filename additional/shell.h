@@ -19,3 +19,4 @@ void getDir(char *dir);
 char cd(char *dir, char currentDir, char *argument);
 void cat(char *name, char currentDir);
 void getCurrentDir(char *dir, char currentDir);
+void ln(char *dir, char currentDir, char *name);

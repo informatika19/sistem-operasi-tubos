@@ -60,9 +60,9 @@ void ls(char *dir, char currentDir){ //ls function
     int i;
 
     char name[MAX_FILENAME]; //name variable
-    char p, s;//parent and sector variable
+    char p, s; //parent and sector variable
     print("\r\n* | ");
-    for(i=0; i<MAX_DIR; i++){//looping through sectors
+    for(i=0; i<MAX_DIR; i++){ //looping through sectors
         p = dir[ENTRY*i];
         s = dir[ENTRY*i + SOFFSET];
         if(p == currentDir && s!=EMPTY_FILES){
@@ -183,3 +183,13 @@ void getCurrentDir(char *dir, char currentDir){
     else
         print(dir+currentDir*16+NAME_OFFSET);
 }
+
+// void ln(char *dir, char currentDir, char *name){
+//     char fname[MAX_FILENAME];
+//     char content[8192];
+//     int success = 0;
+//     readFile(content, name, &success, currentDir);
+//     if(success == -1){
+
+//     }
+// }
