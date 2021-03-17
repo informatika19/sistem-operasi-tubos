@@ -23,8 +23,9 @@ void readString(char *string);
 void clear(char* buffer, int length);
 
 //MILESTONE 2 TODO
-// void writeFile(char *buffer, char *path, int *sectors, char parentIndex);
-// void readFile(char *buffer, char *path, int *result, char parentIndex);
+void writeFile(char *buffer, char *path, int *sectors, char parentIndex);
+void readFile(char *buffer, char *path, int *result, char parentIndex);
+void writeSector(char *buffer, int sector);
 void readSector(char *buffer, int sector);
 
 //ADDITIONAL FUNCTION
