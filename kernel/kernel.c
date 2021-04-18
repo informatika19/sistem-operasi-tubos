@@ -11,12 +11,12 @@ int main()
 {
     // int y = 1;
     // char string[1024];
-    // setupBoot(); // menuliskan logo ke layar (bonus)
+    setupBoot(); // menuliskan logo ke layar (bonus)
     // interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
-    int flag = 1;
+    // int flag = 1;
     makeInterrupt21();
 
-    executeProgram("shell", 0x2000, &flag, 0xFF);
+    // executeProgram("shell", 0x2000, &flag, 0xFF);
 
     
 }
