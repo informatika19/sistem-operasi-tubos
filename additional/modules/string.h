@@ -1,5 +1,3 @@
-#include "stdfunc.h"
-
 int strcmp(char *str1, char*str2){
     while (*str1 == *str2) {
           if (*str1 == '\0' || *str2 == '\0')
@@ -14,14 +12,6 @@ int strcmp(char *str1, char*str2){
         return 0;
     else
         return -1;
-}
-
-int mod(int x, int y){
-    return (x - y * (x / y));
-}
-
-int div(int x, int y){
-    return x/y;
 }
 
 int strlen(char* string){
@@ -76,12 +66,4 @@ void splitstring(char *src, char* part1, char *part2, char x) {
         j++;
     }
     part2[j] = '\0';
-}
-
-void copySegmentSectorSectors(char *dest, char *src, int n) {
-    int i = 0;
-    while (src[i] != '\0' && i < n) {
-        dest[i] = src[i];
-        i++;
-    }
 }

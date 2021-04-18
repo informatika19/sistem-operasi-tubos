@@ -15,8 +15,8 @@ enterToDisk:
 
 compileKernel:
 	bcc -ansi -c -o compiledResult/kernel.o kernel/kernel.c
-	bcc -ansi -c -o compiledResult/shell.o additional/shell.c
-	bcc -ansi -c -o compiledResult/stdfunc.o additional/stdfunc.c
+	# bcc -ansi -c -o compiledResult/shell.o additional/shell.c
+	# bcc -ansi -c -o compiledResult/stdfunc.o additional/stdfunc.c
 	nasm -f as86 asm/kernel.asm -o compiledResult/kernel_asm.o
 	ld86 -o compiledResult/kernel -d compiledResult/*.o
 	dd if=compiledResult/kernel of=system.img bs=512 conv=notrunc seek=1

@@ -9,27 +9,16 @@ Made by TubOS
 #include "kernel.h"
 int main()
 {
-    int y = 1;
-    char string[1024];
-    setupBoot(); // menuliskan logo ke layar (bonus)
-    interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
-
+    // int y = 1;
+    // char string[1024];
+    // setupBoot(); // menuliskan logo ke layar (bonus)
+    // interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
+    int flag = 1;
     makeInterrupt21();
 
-    printString("Masukan Command:\n");
-    while (1)
-    {
-        // int isSame;
-        interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
-        interrupt(0x21, 1, string, 0, 0);
-        y++;
-        if(strcmp(string, "shell") == 0){
-            initShell();
-        } else if(strcmp(string, "restart") == 0){
-            return;
-        }
-        // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
-    }
+    executeProgram("shell", 0x2000, &flag, 0xFF);
+
+    
 }
 
 void handleInterrupt21(int AX, int BX, int CX, int DX)
@@ -56,6 +45,9 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
         break;
     case 0x05:
         writeFile(BX, CX, DX, AH);
+        break;
+    case 0x06:
+        executeProgram(BX, CX, DX, AH);
         break;
     default:
         printString("Invalid interrupt");
@@ -365,6 +357,24 @@ void delay(int a, int b){
             j++;
         }
         i++;
+    }
+}
+
+void executeProgram(char *filename, int segment, int *success, char parentIndex) {
+    // Buat buffer
+    int isSuccess;
+    char fileBuffer[512 * 16];
+    // Buka file dengan readFile
+    readFile(&fileBuffer, filename, &isSuccess, parentIndex);
+    // If success, salin dengan putInMemory
+    if (isSuccess) {
+        // launchProgram
+        int i = 0;
+        for (i = 0; i < 512*16; i++) {
+        putInMemory(segment, i, fileBuffer[i]);}
+        launchProgram(segment);
+    } else {
+        interrupt(0x21, 0, "File not found!", 0,0);
     }
 }
 
