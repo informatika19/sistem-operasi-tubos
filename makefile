@@ -15,6 +15,7 @@ enterToDisk:
 
 compileKernel:
 	bcc -ansi -c -o compiledResult/kernel.o kernel/kernel.c
+	bcc -ansi -c -o compiledResult/draw.o kernel/draw.c
 	# bcc -ansi -c -o compiledResult/shell.o additional/shell.c
 	# bcc -ansi -c -o compiledResult/stdfunc.o additional/stdfunc.c
 	bcc -ansi -c -o compiledResult/math.o modules/math.c
