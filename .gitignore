@@ -2,3 +2,5 @@
 *.img
 loadfile
 program/*.o
+tes
+program/tes
