@@ -11,25 +11,27 @@ int main()
 {
     int y = 1;
     char string[1024];
-    setupBoot(); // menuliskan logo ke layar (bonus)
+    int return1;
+    //setupBoot(); // menuliskan logo ke layar (bonus)
     interrupt(0x10, 0x0003, 0, 0, 0);//for debug purpose
 
     makeInterrupt21();
 
     printString("Masukan Command:\n");
-    while (1)
-    {
-        // int isSame;
-        interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
-        interrupt(0x21, 1, string, 0, 0);
-        y++;
-        if(strcmp(string, "shell") == 0){
-            printString("hello");
-        } else if(strcmp(string, "restart") == 0){
-            return;
-        }
-        // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
-    }
+    executeProgram("tes", 0x2000, &return1, 0xFF);
+    // while (1)
+    // {
+    //     // int isSame;
+    //     interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
+    //     interrupt(0x21, 1, string, 0, 0);
+    //     y++;
+    //     if(strcmp(string, "shell") == 0){
+    //         executeProgram("hello", 0x2000, &return1, 0xFF);
+    //     } else if(strcmp(string, "restart") == 0){
+    //         return;
+    //     }
+    //     // interrupt(0x10, 0x0200, 0, 0, 0x100 * y | 0X0);
+    // }
 }
 
 void handleInterrupt21(int AX, int BX, int CX, int DX)

@@ -4,7 +4,7 @@
 //MILESTONE 2
 void copySegmentSectorSectors(char *dest, char *src, int n) {
     int i = 0;
-    while (src[i] != '\0' && i < n) {
+    while (i < n) {
         dest[i] = src[i];
         i++;
     }
@@ -185,9 +185,9 @@ void executeProgram(char *filename, int segment, int *success, char parentIndex)
     // Buka file dengan readFile
     readFile(&fileBuffer, filename, &isSuccess, parentIndex);
     // If success, salin dengan putInMemory
-    if (isSuccess) {
-        // launchProgram
+    if (isSuccess == 1) {
         int i = 0;
+        // launchProgram
         for (i = 0; i < 512*16; i++) {
         putInMemory(segment, i, fileBuffer[i]);}
         launchProgram(segment);
