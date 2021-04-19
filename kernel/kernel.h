@@ -28,9 +28,6 @@ void readFile(char *buffer, char *path, int *result, char parentIndex);
 void writeSector(char *buffer, int sector);
 void readSector(char *buffer, int sector);
 
-//MILESTONE 3
-void executeProgram(char *filename, int segment, int *success, char parentIndex);
-
 //ADDITIONAL FUNCTION
 void drawString(char *string); //draw string in memory 0xB000
 void drawBox(int x1, int x2, int y1, int y2, int z, int color);
