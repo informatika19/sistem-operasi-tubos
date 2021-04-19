@@ -8,6 +8,7 @@ createImage:
 # dd if=/dev/zero of=sectors.img bs=512 count=1
 
 compileBootLoader:
+	rm compiledResult/*
 	nasm asm/bootloader.asm -o compiledResult/bootloader
 
 enterToDisk:
@@ -15,7 +16,10 @@ enterToDisk:
 
 compileKernel:
 	bcc -ansi -c -o compiledResult/kernel.o kernel/kernel.c
-	bcc -ansi -c -o compiledResult/shell.o additional/shell.c
+	bcc -ansi -c -o compiledResult/math.o kernel/modules/math.c
+	bcc -ansi -c -o compiledResult/string.o kernel/modules/string.c
+	bcc -ansi -c -o compiledResult/sector.o kernel/modules/sector.c
+	#bcc -ansi -c -o compiledResult/shell.o additional/shell.c
 	bcc -ansi -c -o compiledResult/stdfunc.o additional/stdfunc.c
 	nasm -f as86 asm/kernel.asm -o compiledResult/kernel_asm.o
 	ld86 -o compiledResult/kernel -d compiledResult/*.o

@@ -24,7 +24,7 @@ int main()
         interrupt(0x21, 1, string, 0, 0);
         y++;
         if(strcmp(string, "shell") == 0){
-            initShell();
+            printString("hello");
         } else if(strcmp(string, "restart") == 0){
             return;
         }
