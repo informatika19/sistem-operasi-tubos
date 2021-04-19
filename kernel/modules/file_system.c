@@ -54,10 +54,10 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 			idxSegmentTarget = sectorSectors[idxEntrySectors*16];//idx 1 segment pada sector Sectors
 			for (j = 0; j < 16 && sectorSectors[idxEntrySectors*16 + j] != 0x00; j++)
 			{
+			    idxSegmentTarget = sectorSectors[idxEntrySectors*16 + j];//idx 1 segment pada sector Sectors
 				clear(segmentSectorSectors,SECTOR_SIZE);
 				readSector(segmentSectorSectors, idxSegmentTarget);
             	copySegmentSectorSectors((buffer+j*SECTOR_SIZE), segmentSectorSectors, SECTOR_SIZE);//copy segment tersebut ke buffer
-			    idxSegmentTarget = sectorSectors[idxEntrySectors*16 + j];//idx 1 segment pada sector Sectors
 			}
 			*result = 1;//File ditemukan (readFile)
 		}
@@ -183,6 +183,7 @@ void executeProgram(char *filename, int segment, int *success, char parentIndex)
     int isSuccess;
     char fileBuffer[512 * 16];
     // Buka file dengan readFile
+    clear(fileBuffer, 512 * 16);
     readFile(&fileBuffer, filename, &isSuccess, parentIndex);
     // If success, salin dengan putInMemory
     if (isSuccess == 1) {

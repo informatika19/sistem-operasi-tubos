@@ -67,3 +67,7 @@ void delay(int a, int b){
         i++;
     }
 }
+
+void clear(){
+    interrupt(0x10, 0x0003, 0, 0, 0);
+}

@@ -13,7 +13,7 @@ int main() {
     FILE *file = fopen("files.img", "wb");
 
     for (int i = 0; i < SECTOR_SIZE; i++) {
-        if (i < 64 || (i >= 0x100 && i < 0x100 + FILESYSTEM_SIZE))
+        if (i < 17 || (i >= 0x100 && i < 0x100 + FILESYSTEM_SIZE))
             fwrite(FILLED_MAP_ENTRY, 1, 1, map);
         else
             fwrite(EMPTY_MAP_ENTRY, 1, 1, map);

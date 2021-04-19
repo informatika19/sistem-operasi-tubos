@@ -1,1 +1,1 @@
-bcc -ansi -c -o tes.o $1 && ld86 -o tes -d string.o tes.o interrupt.o
+bcc -ansi -c -o tes.o $1 && bcc -ansi -c -o func.o $2 && ld86 -o tes -d tes.o func.o interrupt.o math.o string.o file_system.o
