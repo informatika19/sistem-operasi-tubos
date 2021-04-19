@@ -57,6 +57,9 @@ void handleInterrupt21(int AX, int BX, int CX, int DX)
     case 0x05:
         writeFile(BX, CX, DX, AH);
         break;
+    case 0x06:
+        executeProgram(BX, CX, DX, AH);
+        break;
     default:
         printString("Invalid interrupt");
     }

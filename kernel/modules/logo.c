@@ -4,8 +4,8 @@
 void setupBoot()
 {
     drawBootLogo(); //draw ASCII art
-    interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
-    drawGraphic();
+    //interrupt(0x10, 0x0013, 0, 0, 0); //reset screen
+    //drawGraphic();
     interrupt(0x10, 0x0003, 0, 0, 0);
 }
 
