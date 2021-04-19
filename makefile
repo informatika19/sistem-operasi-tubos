@@ -18,7 +18,7 @@ compileKernel:
 	bcc -ansi -c -o compiledResult/kernel.o kernel/kernel.c
 	bcc -ansi -c -o compiledResult/math.o kernel/modules/math.c
 	bcc -ansi -c -o compiledResult/string.o kernel/modules/string.c
-	bcc -ansi -c -o compiledResult/sector.o kernel/modules/sector.c
+	bcc -ansi -c -o compiledResult/tes.o kernel/modules/file_system.c
 	bcc -ansi -c -o compiledResult/logo.o kernel/modules/logo.c
 	nasm -f as86 asm/kernel.asm -o compiledResult/kernel_asm.o
 	ld86 -o compiledResult/kernel -d compiledResult/*.o
