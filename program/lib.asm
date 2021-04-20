@@ -1,12 +1,20 @@
-;lib.asm
-;Michael Black, 2007
-;Modified by Asisten Sister, 2021
-
-;lib.asm contains assembly functions that you can use in the shell
-
+global _putInMemory
 global _interrupt
+global _launchProgram
 
-;int interrupt (int number, int AX, int BX, int CX, int DX)
+_putInMemory:
+	push bp
+	mov bp,sp
+	push ds
+	mov ax,[bp+4]
+	mov si,[bp+6]
+	mov cl,[bp+8]
+	mov ds,ax
+	mov [si],cl
+	pop ds
+	pop bp
+	ret
+
 _interrupt:
 	push bp
 	mov bp,sp
@@ -27,3 +35,20 @@ intr:	int 0x00	;call the interrupt (00 will be changed above)
 	mov ah,0	;we only want AL returned
 	pop bp
 	ret
+
+_launchProgram:
+	mov bp, sp
+	mov bx, [bp+2]
+
+	mov ax, cs
+	mov ds, ax
+	mov si, jump
+	mov [si+3], bx
+	mov ds, bx
+	mov ss, bx
+	mov es, bx
+
+	mov sp, 0xfff0
+	mov bp, 0xfff0
+
+jump: jmp 0x0000:0x0000

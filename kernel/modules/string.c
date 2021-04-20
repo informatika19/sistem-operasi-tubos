@@ -1,19 +1,6 @@
 #include "../kernel.h"
 
 //MILESTONE 1
-void drawString(char *string) //menggambar di address memori VGA
-{
-    int i = 0;
-    int TEXT_LENGTH = 0;
-    while (string[i] != '\0')
-    {
-        putInMemory(VID_MEMORY, 0x8000 + (80 * TEXT_HEIGHT + TEXT_LENGTH) * 2, string[i]);
-        putInMemory(VID_MEMORY, 0x8001 + (80 * TEXT_HEIGHT + TEXT_LENGTH) * 2, COLOR_CYAN);
-        i++;
-        TEXT_LENGTH++;
-    }
-    TEXT_HEIGHT++;
-}
 
 void printString(char *string)
 {

@@ -37,6 +37,6 @@ void delay(int a, int b);
 void setupBoot();
 
 
-int TEXT_HEIGHT = 0;
+
 
 #endif
