@@ -2,6 +2,7 @@ extern int interrupt (int number, int AX, int BX, int CX, int DX);
 
 
 int main(){
+    int return2;
     char input[1024];
     char arg1[512];
     char arg2[512];
@@ -19,7 +20,7 @@ int main(){
         if(strcmp(input, "ls") == 0){
             ls(filesSector, currentDir);
         } if(strcmp(arg1, "cat") == 0){
-            cat(arg2, currentDir);
+            executeProgram("tes5", 0x3000, &return2, 0xFF);
         }
         printString("\r\n\r");
     }
