@@ -71,6 +71,87 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 	}
 }
 
+void removeFile(char *path, int *returnc, char parentIndex){
+    char map[512]; //map_sectors
+    char files[512*2]; //files_sectors (isinya ada 2)
+    char sectors[512]; //sector_sectors
+
+    char file_buff[512]; //isi file
+    char filename[14]; //filename (maks 14)
+
+    int i=0;
+    int j=0;
+
+    int s_index_sectors = 0; //s index dari sectors sector
+    int s_index_files = 0; //s index dari sectors file
+    int sector_read = 0; //yang dibaca
+    int files_entry = 0; //entry file
+
+    int filefound = 0; //apakah file ketemu
+    int isFile = 0; //apakah nama termasuk file
+
+    readSector(files[0], 0x101);
+    readSector(files[0], 0x101+1);
+
+    if(strlen(path) < 14){
+        for(i; i<2; i++){
+            j=0;
+            while(!filefound && j<512){
+                if(files[i][j] == parentIndex){
+                   clear(filename, 14);
+                   strcopybounded(filename, files[i]+j+0x2, 14);
+                   if(!strcmp(path, filename)){
+                       filefound = 1;
+                       s_index_sectors = files[i][j+0x1];
+                       s_index_files = i;
+                       files_entry = j;
+                       if(files[i][j*0x10+0x1]!=0xFF){
+                           isFile = true;
+                       } 
+                   } 
+                }
+                j += 0x10;
+            }
+        }
+    }
+
+    if(filefound){
+        if(isFile){
+            for(i=0; i<16; i++){
+                if(i==0)
+                    files[s_index_sectors][files_entry+i] = 0xFF;
+                if(i==1)
+                    files[s_index_sectors][files_entry+i] = 0xDE;
+                else
+                    files[s_index_sectors][files_entry+i] = 0x0;
+            }
+
+            readSector(map, 0x101);
+            readSector(sectors, 0x103);
+
+            for(i=0; i<0x10; i++){
+                if(sector_read > 16)
+                    map[sector_read] = 0x00;
+                sectors[s_index_sectors*0x10+i] = 0x00;
+                sector_read = sectors[s_index_sectors*0x10+i];
+            }
+        }
+        writeSector(files[0], 0x101);
+        writeSector(files[1], 0x101+1);
+
+        if(isFile){
+            writeSector(map, 0x100);
+            writeSector(sectors, 0x103);
+            *returncore = 0;
+        }
+    }
+    if(!filefound)
+        *returncode = -1;
+    else
+        *returncode = 1;
+    
+}
+
 //referensi tanur
 void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
     // TODO : Extra, Extra, Extra, use multidimensional array damnit
