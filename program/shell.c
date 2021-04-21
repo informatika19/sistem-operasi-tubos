@@ -20,7 +20,11 @@ int main(){
         if(strcmp(input, "ls") == 0){
             ls(filesSector, currentDir);
         } if(strcmp(arg1, "cat") == 0){
-            executeProgram("tes5", 0x3000, &return2, 0xFF);
+            executeProgram("cat", 0x3000, &return2, 0xFF);
+        } if(strcmp(arg1, "rm") == 0){
+            executeProgram("rm", 0x3000, &return2, 0xFF);
+        } if(strcmp(arg1, "mv") == 0){
+            executeProgram("mv", 0x3000, &return2, 0xFF);
         }
         printString("\r\n\r");
     }
