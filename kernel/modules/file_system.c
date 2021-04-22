@@ -72,96 +72,96 @@ void readFile(char *buffer, char *path, int *result, char parentIndex){
 }
 
 void removeFile(char *path, int *returnc, char parentIndex){
-    char map[512]; //map_sectors
-    char files[512*2]; //files_sectors (isinya ada 2)
-    char sectors[512]; //sector_sectors
+    char files[2][SECTOR_SIZE]; //Files sectors
+    char map[SECTOR_SIZE]; //Map sectors
+    char sectors[SECTOR_SIZE]; //Sector sectors
+    char file_container[512]; //Isi file
+    char filename[14]; //Nama file
+    int i = 0, j = 0;
+    int s_id_sectors = 0; //S byte sectors
+    int reader = 0;
+    int files_entry_idx = 0;
+    int files_idx = 0; //Files Sector ke 1 atau 2
+    int filefound = 0;
+    int isFile = 0;
 
-    char file_buff[512]; //isi file
-    char filename[14]; //filename (maks 14)
+    readSector(files[0], FILES_SECTOR);
+    readSector(files[1], FILES_SECTOR + 1);
 
-    int i=0;
-    int j=0;
-
-    int s_index_sectors = 0; //s index dari sectors sector
-    int s_index_files = 0; //s index dari sectors file
-    int sector_read = 0; //yang dibaca
-    int files_entry = 0; //entry file
-
-    int filefound = 0; //apakah file ketemu
-    int isFile = 0; //apakah nama termasuk file
-
-    readSector(files[0], 0x101);
-    readSector(files[0], 0x101+1);
-
-    if(strlen(path) < 14){
-        for(i; i<2; i++){
-            j=0;
-            while(!filefound && j<512){
-                if(files[i][j] == parentIndex){
-                   clear(filename, 14);
-                   strcopybounded(filename, files[i]+j+0x2, 14);
-                   if(!strcmp(path, filename)){
-                       filefound = 1;
-                       s_index_sectors = files[i][j+0x1];
-                       s_index_files = i;
-                       files_entry = j;
-                       if(files[i][j*0x10+0x1]!=0xFF){
-                           isFile = true;
-                       } 
-                   } 
+    //Pengecekan input nama file valid
+    if (strlen(path) < 14) {
+        //Looping pada 2 sector files
+        for(i=0; i<2 && !filefound; i++) {
+            j = 0;
+            while (j < SECTOR_SIZE && !filefound) {
+                //Cek apakah sama seperti parent folder
+                if (files[i][j] == parentIndex) {
+                    clear(filename, 14);
+                    strcpybounded(filename, files[i]+j+PATHNAME_BYTE_OFFSET, 14);
+                    //Apabila nama sama
+                    if (!strcmp(path, filename)) {
+                        filefound = 1;
+                        s_id_sectors = files[i][j+ENTRY_BYTE_OFFSET];
+                        files_idx = i;
+                        files_entry_idx = j;
+                        if (files[i][j+ENTRY_BYTE_OFFSET] != FOLDER_ENTRY)
+                            isFile = 1;
+                    }
                 }
-                j += 0x10;
+                j += FILES_ENTRY_SIZE;
             }
         }
     }
 
-    if(filefound){
-        if(isFile){
+    if (filefound) {
+        if (isFile) {
             for(i=0; i<16; i++){
                 if(i==0)
-                    files[s_index_sectors][files_entry+i] = 0xFF;
-                if(i==1)
-                    files[s_index_sectors][files_entry+i] = 0xDE;
+                    files[files_idx][files_entry_idx] = ROOT_PARENT_FOLDER;
+                else if(i==1)
+                    files[files_idx][files_entry_idx+i] = EMPTY_FILES_ENTRY;
                 else
-                    files[s_index_sectors][files_entry+i] = 0x0;
+                    files[files_idx][files_entry_idx + i] = 0x00;
             }
 
-            readSector(map, 0x101);
-            readSector(sectors, 0x103);
+            readSector(sectors, SECTORS_SECTOR);
+            readSector(map, MAP_SECTOR);
 
-            for(i=0; i<0x10; i++){
-                if(sector_read > 16)
-                    map[sector_read] = 0x00;
-                sectors[s_index_sectors*0x10+i] = 0x00;
-                sector_read = sectors[s_index_sectors*0x10+i];
+            for(i = 0 ; i < SECTORS_ENTRY_SIZE; i++){
+                reader = sectors[s_id_sectors*SECTORS_ENTRY_SIZE + i];
+                if (reader > 16)
+                    map[reader] = EMPTY_MAP_ENTRY;
+                sectors[s_id_sectors*SECTORS_ENTRY_SIZE + i] = EMPTY_SECTORS_ENTRY;
+                
             }
+            *returnc = 0; //sebuah file
         }
-        writeSector(files[0], 0x101);
-        writeSector(files[1], 0x101+1);
-
-        if(isFile){
-            writeSector(map, 0x100);
-            writeSector(sectors, 0x103);
-            *returncore = 0;
+        //Overwrite ke sector files
+        writeSector(files[0], FILES_SECTOR);
+        writeSector(files[1], FILES_SECTOR + 1);
+        if (isFile) {
+            //Overwrite ke sector map dan sectors
+            writeSector(map, MAP_SECTOR);
+            writeSector(sectors, SECTORS_SECTOR);
         }
+        *returnc = 1; //bukan sebuah file
     }
-    if(!filefound)
-        *returncode = -1;
+
     else
-        *returncode = 1;
+        *returnc = -1; //tidak ditemukan nama yang cocok
     
 }
 
-//referensi tanur
+//referensi kelompok lain (13519214)
 void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
     // TODO : Extra, Extra, Extra, use multidimensional array damnit
     // TODO : Extra, special flag for link
     char map_buf[SECTOR_SIZE], files_buf[2][SECTOR_SIZE], sectors_buf[SECTOR_SIZE]; // Filesystem buffer
-    char file_segment_buffer[SECTOR_SIZE]; // Buffer for writing to sector, always get clear()
-    char filename_buffer[16], adjusted_path[16];
+    char file_container[SECTOR_SIZE]; // Buffer for writing to sector, always get clear()
+    char filename[16], adjusted_path[16];
     char parent_entry_byte; // Temporary "P" byte holder / parent index at files filesystem
     int i = 0, j = 0, segment_idx = 0; // Iterator index
-    int f_entry_idx = 0, f_entry_sector_idx = 0, sectors_entry_idx = 0; // Targets Index
+    int f_entry_idx = 0, f_entry_sector_idx = 0, s_id_sectors = 0; // Targets Index
     int map_empty_bytes_sum = 0, buffer_size = 0, write_file_error_code = 0;
     int is_empty_dir_exist = 0, is_enough_sector = 0;
     int is_empty_sectors_idx_exist = 0, is_empty = 1;
@@ -195,9 +195,9 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
                 // Checking existing filename in same parent folder
                 if (files_buf[i][j+PARENT_BYTE_OFFSET] == parentIndex) {
                     // Needed buffer because entry may ignoring null terminator
-                    clear(filename_buffer, 16);
-                    strcpybounded(filename_buffer, files_buf[i]+j+PATHNAME_BYTE_OFFSET, 14);
-                    if (!strcmp(path, filename_buffer))
+                    clear(filename, 16);
+                    strcpybounded(filename, files_buf[i]+j+PATHNAME_BYTE_OFFSET, 14);
+                    if (!strcmp(path, filename))
                         valid_filename = 0;
                 }
                 j += FILES_ENTRY_SIZE;
@@ -274,7 +274,7 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
                 if (is_empty) {
                     is_empty_sectors_idx_exist = 1;
                     is_ready_to_write_file = 1;
-                    sectors_entry_idx = i;
+                    s_id_sectors = i;
                 }
 
                 i++; // Jumping 16 bytes
@@ -284,7 +284,7 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
         // File writing
         if (is_ready_to_write_file) {
             // Updating files filesystem buffer
-            files_buf[f_entry_sector_idx][f_entry_idx+ENTRY_BYTE_OFFSET] = sectors_entry_idx;
+            files_buf[f_entry_sector_idx][f_entry_idx+ENTRY_BYTE_OFFSET] = s_id_sectors;
 
             // Find empty sector between 0x0 and 0x100
             // (256, limitation of 1 byte entry in sectors filesystem) and write
@@ -299,13 +299,13 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
                     // FIXME : Extra, split to multiple sectors
                     // WARNING : Will stop writing if file more than 8192 bytes
                     if (j < SECTORS_ENTRY_SIZE)
-                        sectors_buf[sectors_entry_idx*SECTORS_ENTRY_SIZE+j] = i;
+                        sectors_buf[s_id_sectors*SECTORS_ENTRY_SIZE+j] = i;
                     j++;
 
                     // Entry writing at sector
-                    clear(file_segment_buffer, SECTOR_SIZE);
-                    copySegmentSectorSectors(file_segment_buffer, (buffer+segment_idx*SECTOR_SIZE), SECTOR_SIZE);
-                    writeSector(file_segment_buffer, i);
+                    clear(file_container, SECTOR_SIZE);
+                    copySegmentSectorSectors(file_container, (buffer+segment_idx*SECTOR_SIZE), SECTOR_SIZE);
+                    writeSector(file_container, i);
                     segment_idx++;
                     buffer_size -= SECTOR_SIZE;
                 }
@@ -318,7 +318,7 @@ void writeFile(char *buffer, char *path, int *sectors, char parentIndex) {
 
             // If theres still not-filled sectors bytes, fill with FILLED_EMPTY_SECTORS_BYTE
             while (j < SECTORS_ENTRY_SIZE) {
-                sectors_buf[sectors_entry_idx*SECTORS_ENTRY_SIZE+j] = FILLED_EMPTY_SECTORS_BYTE;
+                sectors_buf[s_id_sectors*SECTORS_ENTRY_SIZE+j] = FILLED_EMPTY_SECTORS_BYTE;
                 j++;
             }
 

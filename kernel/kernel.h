@@ -15,7 +15,7 @@
 #define FALSE 0
 #define SECTOR_SIZE 512
 
-// Punya Tanur
+// Punya Kelompok LAin
 // Macro for filesystem syscalls
 // Filesytem location
 #define NULL 0x00
