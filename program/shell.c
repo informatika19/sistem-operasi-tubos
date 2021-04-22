@@ -30,6 +30,10 @@ int main(){
         } if(strcmp(arg1, "debug") == 0){
             strcopy("hello", buffer);
             writeFile(buffer, "tes2.txt", &return2, 0xFF);
+        } if(strcmp(arg1, "remov") == 0){
+            //deleteFile("tes2.txt", &return2, 0xFF);
+            removeFile("tes2.txt", &return2, 0xFF);
+        } if(strcmp(arg1, "remov2") == 0){
         }
         printString("\r\n\r");
     }
