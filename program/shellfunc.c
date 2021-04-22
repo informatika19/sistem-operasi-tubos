@@ -31,7 +31,6 @@ void ls(char *dir, char currentDir){ //ls function
 }
 
 char cd(char *dir, char currentDir, char *argument){
-    printString("\rFabian\r\n");
     int i,j,k, dirCount;
     char successCode;
     char newDir;

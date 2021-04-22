@@ -3,6 +3,7 @@ void cat(char *fname, char currentDir);
 int main(){
     char arg2[8192];
     int return2;
+    clear(arg2, 8192);
     readFile(arg2, "arg.temp", &return2, 0xFF);
     cat(arg2, 0xFF);
     printString("\r");

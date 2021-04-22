@@ -4,3 +4,10 @@ loadfile
 program/*.o
 tes
 program/tes
+cat
+mv
+rm
+tes
+cp
+ln
+mkdir

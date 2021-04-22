@@ -12,7 +12,7 @@ int main(){
     char currentDir = 0xFF; //current direcory (default root)
 
     clear(); //clear screen
-    printString("Shell\n\r");
+    printString("TubOShell\n\r");
     while(1){
         getDir(filesSector); //readsector then assign it to filesSector
         clear(buffer, 512);
@@ -43,6 +43,8 @@ int main(){
             //executeProgram("rm", 0x3000, &return2, 0xFF);
         } if(strcmp(arg1, "mv") == 0){
             executeProgram("mv", 0x3000, &return2, 0xFF);
+        } if(strcmp(arg1, "cp") == 0){
+            executeProgram("cp", 0x3000, &return2, 0xFF);
         } if(strcmp(arg1, "debug") == 0){
             strcopy("hello", buffer);
             writeFile(buffer, "tes2.txt", &return2, 0xFF);
