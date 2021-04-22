@@ -52,12 +52,12 @@ void clear(char *buffer, int length)
 
 int strcmp(char *str1, char*str2){
     while (*str1 == *str2) {
-          if (*str1 == '\0' || *str2 == '\0')
-            break;
+        if (*str1 == '\0' || *str2 == '\0')
+        break;
 
-          str1++;
-          str2++;
-       }
+        str1++;
+        str2++;
+    }
 
 
     if (*str1 == '\0' && *str2 == '\0')
