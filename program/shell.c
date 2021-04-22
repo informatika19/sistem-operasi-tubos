@@ -36,14 +36,13 @@ int main(){
             printString(arg1);
             currentDir = cd(filesSector, currentDir, arg2);
             removeFile("arg.temp", &return2, 0xFF);
-        } if(strcmp(arg1, "cat") == 0){
+        } if(strcmp(arg1, "cat") == 0){ //cat created
             executeProgram("cat", 0x5000, &return2, 0xFF);
-        } if(strcmp(arg1, "rm") == 0){
-            printString(arg2);
-            //executeProgram("rm", 0x3000, &return2, 0xFF);
-        } if(strcmp(arg1, "mv") == 0){
-            executeProgram("mv", 0x3000, &return2, 0xFF);
-        } if(strcmp(arg1, "cp") == 0){
+        } if(strcmp(arg1, "rm") == 0){ //rm created
+            executeProgram("rm", 0x3000, &return2, 0xFF);
+        } if(strcmp(arg1, "mv") == 0){ //mv not yet
+            //executeProgram("mv", 0x3000, &return2, 0xFF);
+        } if(strcmp(arg1, "cp") == 0){ //cp created
             executeProgram("cp", 0x3000, &return2, 0xFF);
         } if(strcmp(arg1, "debug") == 0){
             strcopy("hello", buffer);
