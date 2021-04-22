@@ -21,10 +21,21 @@ int main(){
         getCurrentDir(filesSector, currentDir); //get current directory
         readString(input);
         splitstring(input, arg1, arg2, ' ');
+        printString(arg1);
+        printString(arg2);
         writeFile(arg2, "arg.temp", &return2, 0xFF);
-        
+
         if(strcmp(input, "ls") == 0){
+            printString("ls");
             ls(filesSector, currentDir);
+            removeFile("arg.temp", &return2, 0xFF);
+        } if(strcmp(arg1, "cd") == 0){
+            /*Todo:
+                Entah kenapa input cd gabisa masuk branch if yang ini.
+            */
+            printString(arg1);
+            currentDir = cd(filesSector, currentDir, arg2);
+            removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cat") == 0){
             executeProgram("cat", 0x5000, &return2, 0xFF);
         } if(strcmp(arg1, "rm") == 0){
@@ -32,15 +43,14 @@ int main(){
             //executeProgram("rm", 0x3000, &return2, 0xFF);
         } if(strcmp(arg1, "mv") == 0){
             executeProgram("mv", 0x3000, &return2, 0xFF);
-            
         } if(strcmp(arg1, "debug") == 0){
             strcopy("hello", buffer);
             writeFile(buffer, "tes2.txt", &return2, 0xFF);
         } if(strcmp(arg1, "remov") == 0){
             //deleteFile("tes2.txt", &return2, 0xFF);
             removeFile("tes2.txt", &return2, 0xFF);
-        } if(strcmp(arg1, "remov2") == 0){
-
+        } if(strcmp(arg1, "mkdir") == 0){
+            executeProgram("mkdir", 0x5000, &return2, 0xFF);
         }
         printString("\r\n\r");
     }

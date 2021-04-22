@@ -27,7 +27,7 @@ void cat(char *fname, char currentDir){//read file
     else{
         readFile(content, fname, &returnRead, currentDir);
         if(returnRead == -1){
-            printString("\r\nfile not found\n");
+            printString("\r\n\nfile not found\n");
         } else{
             printString("\r\n");
             printString(content);
