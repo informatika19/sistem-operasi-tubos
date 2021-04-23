@@ -1,1 +1,3 @@
-*
+bootloader
+kernel
+*.o
