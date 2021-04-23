@@ -8,7 +8,7 @@
 4. Fadel Ananda Dotty       (13519146)  
 
 ## How to run
-Masukkan "./runall.sh" tanpa tanda kutip, maka program akan berjalan
+> Masukkan "./runall.sh" tanpa tanda kutip, maka semua program external akan dimasukkan ke filesystem dan program akan berjalan
 
 ## Modul
 1. Modul teks (string.c)
@@ -16,10 +16,12 @@ Masukkan "./runall.sh" tanpa tanda kutip, maka program akan berjalan
 3. Modul matematika (math.c)
 
 ## Program External
-1. cat: mencetak isi file, memanggil di shell dengan perintah "cat {namafile}"
+1. cat: mencetak isi file, memanggil di shell dengan perintah "cat {namafile}" pada directory tempat file berada
 2. cp: menduplikasi file, memanggil di shell dengan perintah "cp {namafile} {directory}"
-3. mkdir: membuat directory pada filesystem, memanggil di shell dengan perintah "mkdir {namafile}"
-4. rm: menghapus file pada filesystem, memanggil di shell dengan perintah "rm {namafile}"
+3. mkdir: membuat directory pada filesystem, memanggil di shell dengan perintah "mkdir {namadirectory} {directorytujuan}"
+4. rm: menghapus file pada filesystem, memanggil di shell dengan perintah "rm {namafile}" pada directory tempat file berada
+5. mv: memindahkan file dari suatu directory ke directory lain, memanggil dengan perintah "mv {namafile} {directorytujuan}"
+6. ln: tidak membuat
 
 ## Kode Kelompok Lain
-> Mangga (K-04)
+> Beberapa fungsi memakai fungsi pada tag rilis 2.0 kelompok Mangga (K-04)

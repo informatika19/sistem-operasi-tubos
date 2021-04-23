@@ -1,5 +1,6 @@
 #include "shell.h"
 
+//SHELL MILESTONE 2
 int cursorRow = 2;
 void initShell(){ //Shell Init
     char filesSector[2][SECTOR_SIZE]; //contains filesystem files
