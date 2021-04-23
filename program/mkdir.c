@@ -1,4 +1,3 @@
-# define MAX_NAME_LENGTH 14
 int main(){
     // Fungsi write file yang diberi argumen pertama 0x00 akan membuat sebuah
     // folder dengan nama yang dimasukkan pada argumen kedua
@@ -12,6 +11,6 @@ int main(){
     printString("Folder ");
     printString(foldername);
     printString(" terbuat!");
-    printString("\n\n\r");
+    printString("\n\r");
     executeProgram("tes", 0x2000, &returncode, 0xFF);
 }

@@ -32,15 +32,15 @@ int main(){
             currentDir = cd(filesSector, currentDir, arg2);
             removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cat") == 0){ //cat created
-            executeProgram("cat", 0x5000, &return2, 0xFF);
+            executeProgram("cat", 0x5000, &return2, 0xFF); //exec cat as external program
         } if(strcmp(arg1, "rm") == 0){ //rm created
-            executeProgram("rm", 0x3000, &return2, 0xFF);
+            executeProgram("rm", 0x3000, &return2, 0xFF); //exec rm as external program
         } if(strcmp(arg1, "mv") == 0){ //mv not yet
-            //executeProgram("mv", 0x3000, &return2, 0xFF);
+            executeProgram("mv", 0x3000, &return2, 0xFF); //exec mv as external program
         } if(strcmp(arg1, "cp") == 0){ //cp created
-            executeProgram("cp", 0x3000, &return2, 0xFF);
+            executeProgram("cp", 0x3000, &return2, 0xFF); //exec cp as external program
         } if(strcmp(arg1, "mkdir") == 0){
-            executeProgram("mkdir", 0x5000, &return2, 0xFF);
+            executeProgram("mkdir", 0x3000, &return2, 0xFF); //exec mkdir as external program
         } 
         printString("\r\n\r"); //move cursor
     }
