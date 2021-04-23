@@ -1,3 +1,9 @@
+cd img/&&
+./create.sh&&
+cd ..&&
+cp -a program/map.img .&&
+cp -a program/sectors.img .&&
+cp -a program/files.img .&&
 cd program/&&
 ./makeshell.sh shell.c shellfunc.c&& #buat program external shell
 ./makeprogram.sh cat&& #buat program external cat
