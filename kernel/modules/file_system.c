@@ -367,3 +367,84 @@ void executeProgram(char *filename, int segment, int *success, char parentIndex)
         interrupt(0x21, 0, "File not found!", 0,0);
     }
 }
+
+//referensi kelompok lain (13519214)
+char directoryEvaluator(char *dirtable, char *dirstr, int *returncode, char current_dir) {
+    char evaluated_dir = current_dir;
+    char parent_byte_buffer = -1;
+    char directory_name[8][32];
+    char filename_buffer[16];
+    int i, j, k, dirnamecount;
+    int is_valid_args = 1, is_folder_found = 0;
+    clear(directory_name, 8*32);
+
+    // TODO : Extra, maybe std -> strsplit()
+    // Arguments splitting -> From argv in shell(), with some modification
+    i = 0;
+    j = 0;
+    k = 0;
+    while (dirstr[i] != 0x00) {
+        // If found slash in commands and not within double quote mark, make new
+        if (dirstr[i] == 0x2F && j < 8) {
+            k = 0;
+            j++;
+        }
+        else {
+            // Only copy if char is not double quote
+            // and space outside double quote
+            directory_name[j][k] = dirstr[i];
+            k++;
+        }
+        i++;
+    }
+    dirnamecount = j + 1; // Due j is between counting space between 2 args
+
+    // Deleting last slash (ex. mnt/a/b/ -> argv entries = {mnt, a, b, ""} to argv = {mnt, a, b})
+    if (!strcmp(directory_name[dirnamecount-1], ""))
+        dirnamecount--;
+
+
+    // Parsing priority :
+    // 1. If found "." -> change evaluated dir to current dir, will ignoring previous evaluation
+    // 2. If found ".." -> move to parent folder
+    // 3. If found foldername -> search foldername in evaluated dir
+    i = 0;
+    while (i < dirnamecount && is_valid_args) {
+        if (!strcmp(directory_name[i], "."))
+            evaluated_dir = current_dir;
+        else if (!strcmp(directory_name[i], "..")) {
+            // If evaluated dir is NOT in between files entry count and 0 (or valid files index), do nothing
+            // (Root flag by default is on 0xFF which is by default not in range)
+            // else, change evaluated dir to parent evaluated dir
+            if (0 <= evaluated_dir && evaluated_dir < FILES_ENTRY_COUNT)
+                evaluated_dir = dirtable[evaluated_dir*FILES_ENTRY_SIZE+PARENT_BYTE_OFFSET];
+        }
+        else {
+            // If string matching not found, break loop return -1 as failed evaluation
+            j = 0;
+            is_folder_found = 0;
+            while (j < FILES_ENTRY_COUNT && !is_folder_found) {
+                clear(filename_buffer, 16);
+                strcpybounded(filename_buffer, dirtable+j*FILES_ENTRY_SIZE+PATHNAME_BYTE_OFFSET, 14);
+                // If within same parent folder and pathname match, change evaluated_dir
+                parent_byte_buffer = dirtable[j*FILES_ENTRY_SIZE+PARENT_BYTE_OFFSET];
+                if (!strcmp(directory_name[i], filename_buffer) && parent_byte_buffer == evaluated_dir) {
+                    is_folder_found = 1;
+                    evaluated_dir = j; // NOTE : j represent files entry index
+                }
+                j++;
+            }
+
+            if (!is_folder_found)
+                is_valid_args = 0;
+        }
+        i++;
+    }
+
+    if (!is_valid_args)
+        *returncode = -1;
+    else
+        *returncode = 0;
+
+    return evaluated_dir;
+}
