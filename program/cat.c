@@ -2,12 +2,19 @@ void cat(char *fname, char currentDir);
 
 int main(){
     char arg2[8192];
+    char argdir[8192];
+    char dir;
     int return2;
     clear(arg2, 8192);
+    clear(argdir, 8192);
     readFile(arg2, "arg.temp", &return2, 0xFF);
-    cat(arg2, 0xFF);
+    printString(arg2);
+    readFile(argdir, "dir.temp", &return2, 0xFF);
+    dir = argdir[0];
+    cat(arg2, dir); //execute cat
     printString("\r");
     removeFile("arg.temp", &return2, 0xFF);
+    removeFile("dir.temp", &return2, 0xFF);
     executeProgram("tes", 0x2000, &return2, 0xFF);
 }
 

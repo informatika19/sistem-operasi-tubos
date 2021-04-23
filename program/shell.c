@@ -7,6 +7,7 @@ int main(){
     char input[1024];
     char arg1[512];
     char arg2[512];
+    char dir[512];
     char filesSector[2][512]; //contains filesystem files
     char currentDir = 0xFF; //current direcory (default root)
 
@@ -17,10 +18,15 @@ int main(){
         clear(buffer, 512);
         clear(arg2, 512);
         clear(input, 128);
+        clear(dir, 512);
+        dir[0] = currentDir;
         getCurrentDir(filesSector, currentDir); //get current directory
         readString(input);
         splitstring(input, arg1, arg2, ' ');
         writeFile(arg2, "arg.temp", &return2, 0xFF);
+        writeFile(dir, "dir.temp", &return2, 0xFF);
+
+        
 
         if(strcmp(input, "ls") == 0){
             ls(filesSector, currentDir);
