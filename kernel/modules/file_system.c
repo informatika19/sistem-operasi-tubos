@@ -372,20 +372,20 @@ void executeProgram(char *filename, int segment, int *success, char parentIndex)
 char directoryEvaluator(char *dirtable, char *dirstr, int *returncode, char current_dir) {
     char evaluated_dir = current_dir;
     char parent_byte_buffer = -1;
-    char directory_name[ARGC_MAX][ARG_LENGTH];
+    char directory_name[8][32];
     char filename_buffer[16];
     int i, j, k, dirnamecount;
-    bool is_valid_args = true, is_folder_found = false;
-    clear(directory_name, ARGC_MAX*ARG_LENGTH);
+    int is_valid_args = 1, is_folder_found = 0;
+    clear(directory_name, 8*32);
 
     // TODO : Extra, maybe std -> strsplit()
     // Arguments splitting -> From argv in shell(), with some modification
     i = 0;
     j = 0;
     k = 0;
-    while (dirstr[i] != CHAR_NULL) {
+    while (dirstr[i] != 0x00) {
         // If found slash in commands and not within double quote mark, make new
-        if (dirstr[i] == CHAR_SLASH && j < ARGC_MAX) {
+        if (dirstr[i] == 0x2F && j < 8) {
             k = 0;
             j++;
         }
@@ -422,21 +422,21 @@ char directoryEvaluator(char *dirtable, char *dirstr, int *returncode, char curr
         else {
             // If string matching not found, break loop return -1 as failed evaluation
             j = 0;
-            is_folder_found = false;
+            is_folder_found = 0;
             while (j < FILES_ENTRY_COUNT && !is_folder_found) {
                 clear(filename_buffer, 16);
                 strcpybounded(filename_buffer, dirtable+j*FILES_ENTRY_SIZE+PATHNAME_BYTE_OFFSET, 14);
                 // If within same parent folder and pathname match, change evaluated_dir
                 parent_byte_buffer = dirtable[j*FILES_ENTRY_SIZE+PARENT_BYTE_OFFSET];
                 if (!strcmp(directory_name[i], filename_buffer) && parent_byte_buffer == evaluated_dir) {
-                    is_folder_found = true;
+                    is_folder_found = 1;
                     evaluated_dir = j; // NOTE : j represent files entry index
                 }
                 j++;
             }
 
             if (!is_folder_found)
-                is_valid_args = false;
+                is_valid_args = 0;
         }
         i++;
     }
