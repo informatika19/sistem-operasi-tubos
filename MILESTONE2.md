@@ -1,4 +1,4 @@
-# MILESTONE 1 IF2230 Sistem Operasi
+# MILESTONE 2 IF2230 Sistem Operasi
 > Dibuat oleh TubOS
 ## Anggota Kelompok
 1. Pratama Andiko           (13519112)  

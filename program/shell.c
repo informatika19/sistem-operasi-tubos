@@ -7,7 +7,6 @@ int main(){
     char input[1024];
     char arg1[512];
     char arg2[512];
-    char debug[8092];
     char filesSector[2][512]; //contains filesystem files
     char currentDir = 0xFF; //current direcory (default root)
 
@@ -45,16 +44,10 @@ int main(){
             //executeProgram("mv", 0x3000, &return2, 0xFF);
         } if(strcmp(arg1, "cp") == 0){ //cp created
             executeProgram("cp", 0x3000, &return2, 0xFF);
-        } if(strcmp(arg1, "debug") == 0){
-            strcopy("hello", buffer);
-            writeFile(buffer, "tes2.txt", &return2, 0xFF);
-        } if(strcmp(arg1, "remov") == 0){
-            //deleteFile("tes2.txt", &return2, 0xFF);
-            removeFile("tes2.txt", &return2, 0xFF);
         } if(strcmp(arg1, "mkdir") == 0){
             executeProgram("mkdir", 0x5000, &return2, 0xFF);
-        }
-        printString("\r\n\r");
+        } 
+        printString("\r\n\r"); //move cursor
     }
     
 }
