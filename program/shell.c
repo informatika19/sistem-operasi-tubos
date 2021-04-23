@@ -33,9 +33,10 @@ int main(){
             /*Todo:
                 Entah kenapa input cd gabisa masuk branch if yang ini.
             */
-            printString(arg1);
-            currentDir = cd(filesSector, currentDir, arg2);
-            removeFile("arg.temp", &return2, 0xFF);
+            printString("\r\n\r");
+            printString("cd");
+            // currentDir = cd(filesSector, currentDir, arg2);
+            // removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cat") == 0){ //cat created
             executeProgram("cat", 0x5000, &return2, 0xFF);
         } if(strcmp(arg1, "rm") == 0){ //rm created
