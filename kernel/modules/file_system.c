@@ -140,7 +140,7 @@ void removeFile(char *path, int *returnc, char parentIndex){
         writeSector(files[0], FILES_SECTOR);
         writeSector(files[1], FILES_SECTOR + 1);
         if (isFile) {
-            //Overwrite ke sector map dan sectors
+            //Overwrite ke sector map dan sectors kalau jenisnya file
             writeSector(map, MAP_SECTOR);
             writeSector(sectors, SECTORS_SECTOR);
         }
@@ -148,7 +148,7 @@ void removeFile(char *path, int *returnc, char parentIndex){
     }
 
     else
-        *returnc = -1; //tidak ditemukan nama yang cocok
+        *returnc = -1; //return code invalid
     
 }
 

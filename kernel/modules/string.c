@@ -123,3 +123,13 @@ void splitstring(char *src, char* part1, char *part2, char x) {
     }
     part2[j] = '\0';
 }
+
+void strapp(char *string1, char *string2) {
+    int i = strlen(string1), j = 0;
+    while (string2[j] != 0x0) {
+        string1[i] = string2[j];
+        i++;
+        j++;
+    }
+    string1[i] = 0x0;
+}

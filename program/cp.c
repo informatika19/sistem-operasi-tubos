@@ -4,6 +4,7 @@ int main(){
     char split1[512];
     char split2[512];
     int return2;
+    int debug;
     clear(buff, 8192);
     //read argc
     readFile(arg2, "arg.temp", &return2, 0xFF);
@@ -11,10 +12,12 @@ int main(){
     splitstring(arg2, split1, split2, ' ');
     //read isi text
     readFile(buff, split1, &return2, 0xFF);
+    debug = 1;
     //copy ke folder yang sama
     if(!strcmp(split2, ".")){
-        //TODO string name
-        writeFile(buff, "copy1", &return2, 0xFF);
+        //TODO string name butuh convert int ke char
+        strapp(split1, "copy1"); //append name
+        writeFile(buff, split1, &return2, 0xFF);
     }
     //TODO cp to relative pathing
     //{
