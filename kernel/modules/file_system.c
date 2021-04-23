@@ -1,5 +1,5 @@
 #include "../kernel.h"
-
+int isFileValid(char *path, char srcIndex, char files[2][512], int *files_idx, int* files_entry_idx);
 //MILESTONE 2
 void copySegmentSectorSectors(char *dest, char *src, int n) {
     int i = 0;
@@ -461,12 +461,31 @@ void moveFile(char *path, int *returnc, char srcIndex, char destIndex){
     int reader = 0;
     int files_entry_idx = 0;
     int files_idx = 0; //Files Sector ke 1 atau 2
-    int filefound = 0;
+    int isFound = 0;
 
     readSector(files[0], FILES_SECTOR);
     readSector(files[1], FILES_SECTOR + 1);
 
-    //Pengecekan input nama file valid
+    isFound = isFileValid(path,srcIndex,files,&files_idx,&files_entry_idx);
+
+    if (isFound) {
+        files[files_idx][files_entry_idx] = destIndex;
+        *returnc = 0; //sebuah file
+        //Overwrite ke sector files
+        writeSector(files[0], FILES_SECTOR);
+        writeSector(files[1], FILES_SECTOR + 1);
+    }
+
+    else
+        *returnc = -1; //return code invalid
+    
+}
+
+int isFileValid(char *path, char srcIndex, char files[2][512], int *files_idx, int* files_entry_idx){
+    int filefound = 0;
+    int i =0;
+    int j =0;
+    char filename[14];
     if (strlen(path) < 14) {
         //Looping pada 2 sector files
         for(i=0; i<2 && !filefound; i++) {
@@ -479,24 +498,13 @@ void moveFile(char *path, int *returnc, char srcIndex, char destIndex){
                     //Apabila nama sama
                     if (!strcmp(path, filename)) {
                         filefound = 1;
-                        files_idx = i;
-                        files_entry_idx = j;
+                        *files_idx = i;
+                        *files_entry_idx = j;
                     }
                 }
                 j += FILES_ENTRY_SIZE;
             }
         }
     }
-
-    if (filefound) {
-        files[files_idx][files_entry_idx] = destIndex;
-        *returnc = 0; //sebuah file
-        //Overwrite ke sector files
-        writeSector(files[0], FILES_SECTOR);
-        writeSector(files[1], FILES_SECTOR + 1);
-    }
-
-    else
-        *returnc = -1; //return code invalid
-    
+    return filefound;
 }
