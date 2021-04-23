@@ -28,15 +28,13 @@ int main(){
 
         if(strcmp(input, "ls") == 0){
             ls(filesSector, currentDir);
-            removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cd") == 0){
             /*Todo:
                 Entah kenapa input cd gabisa masuk branch if yang ini.
             */
             currentDir = cd(filesSector, currentDir, arg2);
-            removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cat") == 0){ //cat created
-            executeProgram("cat", 0x5000, &return2, 0xFF); //exec cat as external program
+            executeProgram("cat", 0x3000, &return2, 0xFF); //exec cat as external program
         } if(strcmp(arg1, "rm") == 0){ //rm created
             executeProgram("rm", 0x3000, &return2, 0xFF); //exec rm as external program
         } if(strcmp(arg1, "mv") == 0){ //mv not yet
@@ -47,6 +45,8 @@ int main(){
             executeProgram("mkdir", 0x3000, &return2, 0xFF); //exec mkdir as external program
         } 
         printString("\r\n\r"); //move cursor
+        removeFile("arg.temp", &return2, 0xFF); //remove temp file
+        removeFile("dir.temp", &return2, 0xFF); //remove temp file
     }
     
 }

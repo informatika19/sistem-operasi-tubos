@@ -134,7 +134,8 @@ void cat(char *fname, char currentDir){//read file
 void getCurrentDir(char *dir, char currentDir){
     printString("\r");
     if(currentDir == ROOT)
-        printString("root\n\r");
+        printString("root\r");
     else
         printString(dir+currentDir*16+NAME_OFFSET);
+        printString("\n\r");
 }
