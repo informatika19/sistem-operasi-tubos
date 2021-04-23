@@ -8,7 +8,6 @@ int main(){
     clear(arg2, 8192);
     clear(argdir, 8192);
     readFile(arg2, "arg.temp", &return2, 0xFF);
-    printString(arg2);
     readFile(argdir, "dir.temp", &return2, 0xFF);
     dir = argdir[0];
     cat(arg2, dir); //execute cat

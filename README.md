@@ -19,3 +19,6 @@
 2. cp: menduplikasi file, memanggil di shell dengan perintah "cp {namafile} {directory}"
 3. mkdir: membuat directory pada filesystem, memanggil di shell dengan perintah "mkdir {namafile}"
 4. rm: menghapus file pada filesystem, memanggil di shell dengan perintah "rm {namafile}"
+
+## Kode Kelompok Lain
+> Mangga (K-04)

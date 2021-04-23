@@ -26,8 +26,6 @@ int main(){
         writeFile(arg2, "arg.temp", &return2, 0xFF);
         writeFile(dir, "dir.temp", &return2, 0xFF);
 
-        
-
         if(strcmp(input, "ls") == 0){
             ls(filesSector, currentDir);
             removeFile("arg.temp", &return2, 0xFF);

@@ -131,11 +131,6 @@ void cat(char *fname, char currentDir){//read file
     }
 }
 
-void getDir(char *dir){
-    interrupt(0x21, 0x0002, dir, FILES_SECTOR, 0);
-    interrupt(0x21, 0x0002, dir+SECTOR_SIZE, FILES_SECTOR+1, 0);
-}
-
 void getCurrentDir(char *dir, char currentDir){
     printString("\r");
     if(currentDir == ROOT)

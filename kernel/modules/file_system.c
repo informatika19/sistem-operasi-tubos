@@ -448,3 +448,8 @@ char directoryEvaluator(char *dirtable, char *dirstr, int *returncode, char curr
 
     return evaluated_dir;
 }
+
+void getDir(char *dir){
+    interrupt(0x21, 0x0002, dir, FILES_SECTOR, 0);
+    interrupt(0x21, 0x0002, dir+SECTOR_SIZE, FILES_SECTOR+1, 0);
+}
