@@ -14,19 +14,25 @@ int main(){
     //read isi text
     readFile(buff, split1, &return2, 0xFF);
     cp(split1,split2,0xFF);
-    printString("\r\ncp success\n\r");
     removeFile("arg.temp", &return2, 0xFF);
     executeProgram("tes", 0x2000, &return2, 0xFF);
 }
 
 void cp(char *filenamesrc, char *filenamedst, char currentidx) {
-    char file_buffer[8192];
-    int returncode;
-    int destIndex;
-    char buff1[1024];
-    readSector(buff1,0x101);
-    readSector(buff1 + 512,0x102);
-    readFile(file_buffer, filenamesrc, &returncode, currentidx);
-    destIndex = directoryEvaluator(buff1, filenamedst, &returncode,currentidx);
-    writeFile(file_buffer, filenamesrc, &returncode, destIndex);
+    if (!strcmp(filenamedst,"."))
+    {
+        printString("\r\nSame file already exist\n\r");
+    }else
+    {
+        char file_buffer[8192];
+        int returncode;
+        int destIndex;
+        char buff1[1024];
+        readSector(buff1,0x101);
+        readSector(buff1 + 512,0x102);
+        readFile(file_buffer, filenamesrc, &returncode, currentidx);
+        destIndex = directoryEvaluator(buff1, filenamedst, &returncode,currentidx);
+        writeFile(file_buffer, filenamesrc, &returncode, destIndex);
+        printString("\r\ncp success\n\r");
+    }
 }
