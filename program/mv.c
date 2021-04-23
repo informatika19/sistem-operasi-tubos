@@ -32,7 +32,7 @@ int main(){
             printString(split1);
             printString(" moved!");
         } if(returncode == -1){
-            printString("error");
+            printString(" error");
         }
         printString("\n\r");
     }
