@@ -453,3 +453,50 @@ void getDir(char *dir){
     interrupt(0x21, 0x0002, dir, FILES_SECTOR, 0);
     interrupt(0x21, 0x0002, dir+SECTOR_SIZE, FILES_SECTOR+1, 0);
 }
+
+void moveFile(char *path, int *returnc, char srcIndex, char destIndex){
+    char files[2][SECTOR_SIZE]; //Files sectors
+    char filename[14]; //Nama file
+    int i = 0, j = 0;
+    int reader = 0;
+    int files_entry_idx = 0;
+    int files_idx = 0; //Files Sector ke 1 atau 2
+    int filefound = 0;
+
+    readSector(files[0], FILES_SECTOR);
+    readSector(files[1], FILES_SECTOR + 1);
+
+    //Pengecekan input nama file valid
+    if (strlen(path) < 14) {
+        //Looping pada 2 sector files
+        for(i=0; i<2 && !filefound; i++) {
+            j = 0;
+            while (j < SECTOR_SIZE && !filefound) {
+                //Cek apakah sama seperti parent folder
+                if (files[i][j] == srcIndex) {
+                    clear(filename, 14);
+                    strcpybounded(filename, files[i]+j+PATHNAME_BYTE_OFFSET, 14);
+                    //Apabila nama sama
+                    if (!strcmp(path, filename)) {
+                        filefound = 1;
+                        files_idx = i;
+                        files_entry_idx = j;
+                    }
+                }
+                j += FILES_ENTRY_SIZE;
+            }
+        }
+    }
+
+    if (filefound) {
+        files[files_idx][files_entry_idx] = destIndex;
+        *returnc = 0; //sebuah file
+        //Overwrite ke sector files
+        writeSector(files[0], FILES_SECTOR);
+        writeSector(files[1], FILES_SECTOR + 1);
+    }
+
+    else
+        *returnc = -1; //return code invalid
+    
+}
