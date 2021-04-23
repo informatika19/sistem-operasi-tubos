@@ -8,6 +8,7 @@
 4. Fadel Ananda Dotty       (13519146)  
 
 ## How to run
+Masukkan "./runall.sh" tanpa tanda kutip, maka program akan berjalan
 
 ## Modul
 1. Modul teks (string.c)
