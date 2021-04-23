@@ -73,7 +73,7 @@ char cd(char *dir, char currentDir, char *argument){
 
             while (j < 512 && !isFolder) {
                 clear(filename, 16);
-                strcpybounded(filename, dir[j * 16 + 2], 14);
+                strcpybounded(filename, dir + j * 16 + 2, 14);
 
                 parentByte = dir[j * 16 + 0];
 
