@@ -35,6 +35,7 @@ char cd(char *dir, char currentDir, char *argument){
     char successCode;
     char newDir;
     char parentByte;
+    char filetype;
     char dir_name[8][32];
     char filename[16];
     char isFolder;
@@ -76,8 +77,9 @@ char cd(char *dir, char currentDir, char *argument){
                 strcpybounded(filename, dir + j * 16 + 2, 14);
 
                 parentByte = dir[j * 16 + 0];
+                filetype = dir[j * 16 + 1];
 
-                if (strcmp(dir_name[i], filename) == 0 && parentByte == currentDir) {
+                if (strcmp(dir_name[i], filename) == 0 && parentByte == currentDir && filetype == 0xFF) {
                     isFolder = 1;
                     newDir = j;
                 }
