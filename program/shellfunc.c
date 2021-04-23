@@ -85,6 +85,8 @@ char cd(char *dir, char currentDir, char *argument){
             }
 
             if (!isFolder) {
+                printString("\r\n\r");
+                printString("Bukan sebuah directory!");
                 isValidArg = 0;
             }
         }

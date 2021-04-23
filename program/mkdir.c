@@ -11,7 +11,7 @@ int main(){
     printString("\n\r");
     printString("Folder ");
     printString(foldername);
-    printString(" terbuat");
-    printString("\n\r");
+    printString(" terbuat!");
+    printString("\n\n\r");
     executeProgram("tes", 0x2000, &returncode, 0xFF);
 }

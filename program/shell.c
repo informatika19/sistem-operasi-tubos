@@ -21,22 +21,17 @@ int main(){
         getCurrentDir(filesSector, currentDir); //get current directory
         readString(input);
         splitstring(input, arg1, arg2, ' ');
-        printString(arg1);
-        printString(arg2);
         writeFile(arg2, "arg.temp", &return2, 0xFF);
 
         if(strcmp(input, "ls") == 0){
-            printString("ls");
             ls(filesSector, currentDir);
             removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cd") == 0){
             /*Todo:
                 Entah kenapa input cd gabisa masuk branch if yang ini.
             */
-            printString("\r\n\r");
-            printString("cd");
-            // currentDir = cd(filesSector, currentDir, arg2);
-            // removeFile("arg.temp", &return2, 0xFF);
+            currentDir = cd(filesSector, currentDir, arg2);
+            removeFile("arg.temp", &return2, 0xFF);
         } if(strcmp(arg1, "cat") == 0){ //cat created
             executeProgram("cat", 0x5000, &return2, 0xFF);
         } if(strcmp(arg1, "rm") == 0){ //rm created
@@ -54,7 +49,7 @@ int main(){
         } if(strcmp(arg1, "mkdir") == 0){
             executeProgram("mkdir", 0x5000, &return2, 0xFF);
         }
-        printString("\r\n\r");
+        printString("\r\n\n\r");
     }
     
 }
