@@ -20,6 +20,7 @@ cp -a program/ln .&& #copy ln bin file to root
 cp -a program/mkdir .&& #copy mkdir bin file to root
 cp -a program/mv .&& #copy bin mv file to root
 ./loadshell.sh&& #load shell
+./loadfile.sh&& #load shell
 ./loadfile cat&& #load cat
 ./loadfile cp&& #load cp
 ./loadfile rm&& #load rm
